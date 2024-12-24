@@ -22,51 +22,70 @@ class RoadTripType extends AbstractType
         $builder
             ->add('titre', TextType::class, [
                 'label' => 'Titre du Road Trip',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'username', // Affiche le nom d'utilisateur dans la liste déroulante
+                'choice_label' => 'username',
                 'label' => 'Utilisateur',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ])
-            ->add('depart_date', DateType::class, [ // Modifié pour gérer les dates
+            ->add('depart_date', DateType::class, [
                 'label' => 'Date de départ',
-                'widget' => 'single_text', // Utilise un champ HTML5 pour la date
-                'attr' => ['class' => 'form-control']
+                'widget' => 'single_text',
+                'attr' => ['class' => 'form-control'],
             ])
-            ->add('arriver_date', DateType::class, [ // Modifié pour gérer les dates
+            ->add('arriver_date', DateType::class, [
                 'label' => 'Date d\'arrivée',
-                'widget' => 'single_text', // Utilise un champ HTML5 pour la date
-                'attr' => ['class' => 'form-control']
+                'widget' => 'single_text',
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('duree', TextType::class, [
+                'label' => 'Durée (en jours)',
+                'mapped' => false, // Non lié à l'entité
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'readonly' => true, // Lecture seule
+                ],
+            ])
+            ->add('depart_address', TextType::class, [
+                'label' => 'Adresse de départ',
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('arrive_address', TextType::class, [
+                'label' => 'Adresse d\'arrivée',
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('image', FileType::class, [
-                'label' => 'Image du Road Trip',
-                'required' => true,
-                'attr' => ['class' => 'form-control']
+                'label' => 'Image principale',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('description_supplementaire', TextareaType::class, [
-                'label' => 'Racontez-nous en plus sur votre Road Trip',
-                'attr' => ['class' => 'form-control']
+                'label' => 'Description supplémentaire',
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('image_supplementaire', FileType::class, [
-                'label' => 'Image bonus du Road Trip',
-                'required' => true,
-                'attr' => ['class' => 'form-control']
+                'label' => 'Image supplémentaire',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('vehicle', EntityType::class, [
                 'class' => Vehicle::class,
                 'choice_label' => 'type',
                 'label' => 'Véhicule',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Créer le Road Trip',
-                'attr' => ['class' => 'btn btn-primary']
+                'label' => 'Enregistrer',
+                'attr' => ['class' => 'btn btn-primary'],
             ]);
     }
 

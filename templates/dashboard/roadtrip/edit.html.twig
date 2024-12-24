@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un Road Trip{% endblock %}
+{% block title %}Modifier un Road Trip{% endblock %}
 
 {% block stylesheets %}
 {{ parent() }}
@@ -78,7 +78,7 @@
 
 {% block body %}
 <div class="form-container">
-    <h1>Créer un Road Trip</h1>
+    <h1>Modifier un Road Trip</h1>
 
     {# Affiche les erreurs globales du formulaire #}
     {% if form_errors(form) %}
@@ -114,14 +114,6 @@
     {{ form_widget(form.image, { 'attr': { 'class': 'form-control' } }) }}
     {{ form_errors(form.image) ? '<div class="form-error">' ~ form_errors(form.image) ~ '</div>' : ''|raw }}
 
-    <label class="form-label">Description supplémentaire</label>
-    {{ form_widget(form.description_supplementaire, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.description_supplementaire) ? '<div class="form-error">' ~ form_errors(form.description_supplementaire) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Image supplémentaire</label>
-    {{ form_widget(form.image_supplementaire, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.image_supplementaire) ? '<div class="form-error">' ~ form_errors(form.image_supplementaire) ~ '</div>' : ''|raw }}
-
     <label class="form-label">Adresse de départ</label>
     {{ form_widget(form.depart_address, { 'attr': { 'class': 'form-control' } }) }}
     {{ form_errors(form.depart_address) ? '<div class="form-error">' ~ form_errors(form.depart_address) ~ '</div>' : ''|raw }}
@@ -134,7 +126,7 @@
     {{ form_widget(form.vehicle, { 'attr': { 'class': 'form-control' } }) }}
     {{ form_errors(form.vehicle) ? '<div class="form-error">' ~ form_errors(form.vehicle) ~ '</div>' : ''|raw }}
 
-    <button type="submit" class="btn btn-primary">Créer</button>
+    <button type="submit" class="btn btn-primary">Mettre à jour</button>
     <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-secondary">Retour</a>
 
     {{ form_end(form) }}
