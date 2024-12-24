@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Créer un compte</h1>
+
+    <!-- Affiche les erreurs globaux du formulaire -->
+    {% if form_errors(registrationForm) %}
+        <div class="alert alert-danger">
+            {{ form_errors(registrationForm) }}
+        </div>
+    {% endif %}
+
+    <!-- Début du formulaire -->
+    {{ form_start(registrationForm) }}
+    
+        <div class="mb-3">
+            {{ form_label(registrationForm.username) }}
+            {{ form_widget(registrationForm.username, { 'attr': { 'class': 'form-control' } }) }}
+            {{ form_errors(registrationForm.username) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(registrationForm.email) }}
+            {{ form_widget(registrationForm.email, { 'attr': { 'class': 'form-control' } }) }}
+            {{ form_errors(registrationForm.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(registrationForm.plainPassword) }}
+            {{ form_widget(registrationForm.plainPassword, { 
+                'attr': { 'class': 'form-control' },
+                'label': 'Mot de passe'
+            }) }}
+            {{ form_errors(registrationForm.plainPassword) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(registrationForm.agreeTerms) }}
+            {{ form_widget(registrationForm.agreeTerms, { 'attr': { 'class': 'form-check-input' } }) }}
+            {{ form_errors(registrationForm.agreeTerms) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+    
+    {{ form_end(registrationForm) }}
+</div>
+{% endblock %}
