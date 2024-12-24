@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0x3+v5c3dONpLqL7F4gTx1s5ZxwFhF5J7B3Q/mJdk74gbkvi" crossorigin="anonymous">
+
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
         {% endblock %}
@@ -13,5 +16,10 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+        <!-- Bootstrap JS and dependencies (Popper.js, jQuery) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zybcJfX4GdIY6cfF/JR8g2V8h9p3p7b25eb5dR65" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js" integrity="sha384-QnZz3L3QpBQd8i0r1w5/M5cr3EaaYTyzmLFmRaDGiEsXkQxoStcZtdJHT1T5K0GZ" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0x3+v5c3dONpLqL7F4gTx1s5ZxwFhF5J7B3Q/mJdk74gbkvi" crossorigin="anonymous"></script>
+
     </body>
 </html>

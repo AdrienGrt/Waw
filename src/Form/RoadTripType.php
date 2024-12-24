@@ -6,11 +6,11 @@ use App\Entity\RoadTrip;
 use App\Entity\User;
 use App\Entity\Vehicle;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -34,12 +34,14 @@ class RoadTripType extends AbstractType
                 'label' => 'Utilisateur',
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('depart_date', TextType::class, [
+            ->add('depart_date', DateType::class, [ // Modifié pour gérer les dates
                 'label' => 'Date de départ',
+                'widget' => 'single_text', // Utilise un champ HTML5 pour la date
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('arriver_date', TextType::class, [
-                'label' => 'Date d\'arriver',
+            ->add('arriver_date', DateType::class, [ // Modifié pour gérer les dates
+                'label' => 'Date d\'arrivée',
+                'widget' => 'single_text', // Utilise un champ HTML5 pour la date
                 'attr' => ['class' => 'form-control']
             ])
             ->add('image', FileType::class, [
@@ -58,7 +60,7 @@ class RoadTripType extends AbstractType
             ])
             ->add('vehicle', EntityType::class, [
                 'class' => Vehicle::class,
-                'choice_label' => 'type', 
+                'choice_label' => 'type',
                 'label' => 'Véhicule',
                 'attr' => ['class' => 'form-control']
             ])

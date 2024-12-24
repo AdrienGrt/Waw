@@ -11,10 +11,22 @@
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
+    <p>Welcome to your Dashboard! From here, you can manage your road trips, users, and other settings.</p>
+    
     <ul>
-        <li>Your controller at <code>/Users/adrien/Desktop/waw/src/Controller/DashboardController.php</code></li>
-        <li>Your template at <code>/Users/adrien/Desktop/waw/templates/dashboard/index.html.twig</code></li>
+        <li>Your controller is located at <code>/Users/adrien/Desktop/waw/src/Controller/DashboardController.php</code></li>
+        <li>Your template is located at <code>/Users/adrien/Desktop/waw/templates/dashboard/index.html.twig</code></li>
     </ul>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('app_dashboard_roadtrip_create') }}" class="btn btn-primary">Créer un nouveau Road Trip</a>
+        <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-info">Liste des Road Trips</a>
+        <a href="{{ path('app_dashboard_users') }}" class="btn btn-success">Liste des Utilisateurs</a>
+        <a href="{{ path('app_dashboard') }}" class="btn btn-secondary">Retour au Dashboard</a>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="{{ path('app_home') }}" class="btn btn-outline-dark">Retour à l'Accueil</a>
+    </div>
 </div>
 {% endblock %}

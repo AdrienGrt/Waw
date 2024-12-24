@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Road Trips{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Liste des Road Trips</h1>
+
+    {% if roadTrips is empty %}
+        <div class="alert alert-info text-center">
+            Aucun road trip trouvé.
+        </div>
+    {% else %}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date de départ</th>
+                    <th>Date d'arrivée</th>
+                    <th>Véhicule</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for roadTrip in roadTrips %}
+                    <tr>
+                        <td>{{ roadTrip.id }}</td>
+                        <td>{{ roadTrip.titre }}</td>
+                        <td>{{ roadTrip.description|slice(0, 50) ~ '...' }}</td>
+                        <td>{{ roadTrip.getDepartDate()|date('d/m/Y') }}</td>
+                        <td>{{ roadTrip.getArriverDate()|date('d/m/Y') }}</td>
+                       
+                        <td>
+                            <a href="{{ path('app_dashboard_roadtrip_edit', { id: roadTrip.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+                            <form action="{{ path('app_dashboard_roadtrip_delete', { id: roadTrip.id }) }}" method="post" style="display: inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ roadTrip.id) }}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce road trip ?');">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{{ path('app_dashboard_roadtrip_create') }}" class="btn btn-primary">Créer un nouveau Road Trip</a>
+        <a href="{{ path('app_dashboard') }}" class="btn btn-secondary">Retour au Dashboard</a>
+        <a href="{{ path('app_dashboard_users') }}" class="btn btn-info">Liste des Utilisateurs</a>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="{{ path('app_home') }}" class="btn btn-outline-dark">Retour à l'Accueil</a>
+    </div>
+</div>
+{% endblock %}

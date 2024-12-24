@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Road Trip{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center">Créer un Road Trip</h1>
+
+    {# Affiche les erreurs globales du formulaire #}
+    {% if form_errors(form) %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    {# Début du formulaire #}
+    {{ form_start(form, { 'attr': { 'class': 'form' } }) }}
+
+    <div class="mb-3">
+        {{ form_label(form.titre, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.titre, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.titre) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.description, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.depart_date, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.depart_date, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.depart_date) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.arriver_date, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.arriver_date, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.arriver_date) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.image, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.image, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.image) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.image_supplementaire, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.image_supplementaire, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.image_supplementaire) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.vehicle, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.vehicle, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.vehicle) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description_supplementaire, null, { 'label_attr': { 'class': 'form-label' } }) }}
+        {{ form_widget(form.description_supplementaire, { 'attr': { 'class': 'form-control' } }) }}
+        {{ form_errors(form.description_supplementaire) }}
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">{{ form_widget(form.save) }}</button>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
