@@ -106,10 +106,7 @@
     {{ form_widget(form.arriver_date, { 'attr': { 'class': 'form-control' } }) }}
     {{ form_errors(form.arriver_date) ? '<div class="form-error">' ~ form_errors(form.arriver_date) ~ '</div>' : ''|raw }}
 
-    <label class="form-label">Durée du voyage (en jours)</label>
-    {{ form_widget(form.duree, { 'attr': { 'class': 'form-control', 'readonly': 'readonly' } }) }}
-    {{ form_errors(form.duree) ? '<div class="form-error">' ~ form_errors(form.duree) ~ '</div>' : ''|raw }}
-
+   
     <label class="form-label">Image de couverture</label>
     {{ form_widget(form.image, { 'attr': { 'class': 'form-control' } }) }}
     {{ form_errors(form.image) ? '<div class="form-error">' ~ form_errors(form.image) ~ '</div>' : ''|raw }}

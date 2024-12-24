@@ -4,139 +4,182 @@
 
 {% block stylesheets %}
 {{ parent() }}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
+    body {
+        background-color: #f7f7f7;
+    }
+
     .form-container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .form-container h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .form-container .form-label {
-        display: block;
+    .form-title {
+        font-size: 28px;
         font-weight: bold;
-        margin-bottom: 8px;
-    }
-
-    .form-container .form-control {
-        width: 100%;
-        padding: 10px;
+        text-align: center;
         margin-bottom: 20px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        color: #333;
     }
 
-    .form-container .form-control.is-invalid {
+    .form-control.is-invalid {
         border-color: #e53e3e;
     }
 
-    .form-container .form-error {
+    .form-error {
         color: #e53e3e;
         font-size: 14px;
-        margin-top: -15px;
-        margin-bottom: 10px;
     }
 
-    .form-container .btn {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+    .image-preview {
+        display: block;
+        width: 100px;
+        height: 100px;
+        margin: 15px auto;
+        background-color: #f2f2f2;
+        border: 1px dashed #ddd;
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #aaa;
+        font-size: 24px;
     }
 
-    .form-container .btn-primary {
-        background-color: #4299e1;
+    .btn-publish {
+        background-color: #d85c49;
         color: #ffffff;
+        margin-top: 5%;
     }
 
-    .form-container .btn-primary:hover {
-        background-color: #3182ce;
+    .btn-publish:hover {
+        background-color: #c54e3d;
     }
 
-    .form-container .btn-secondary {
-        background-color: #edf2f7;
-        color: #4a5568;
-        margin-top: 10px;
+    .btn-back {
+        background-color: #f2f2f2;
+        color: #333;
+        margin-top: 5%;
     }
 
-    .form-container .btn-secondary:hover {
-        background-color: #e2e8f0;
+    .btn-back:hover {
+        background-color: #e7e7e7;
+    }
+
+    .add-step-btn {
+        background-color: #d85c49;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .add-step-btn:hover {
+        background-color: #c54e3d;
     }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="form-container">
-    <h1>Créer un Road Trip</h1>
+    <h1 class="form-title">Créer un Road Trip</h1>
 
-    {# Affiche les erreurs globales du formulaire #}
-    {% if form_errors(form) %}
-        <div class="form-error">
-            {{ form_errors(form) }}
+    {{ form_start(form) }}
+
+    <div class="mb-3">
+        {{ form_label(form.titre, 'Nom du Road Trip', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.titre) %}
+            <div class="form-error">{{ form_errors(form.titre) }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.description) %}
+            <div class="form-error">{{ form_errors(form.description) }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.depart_date, 'Date de départ', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.depart_date, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.depart_date) %}
+            <div class="form-error">{{ form_errors(form.depart_date) }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.arriver_date, 'Date d\'arrivée', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.arriver_date, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.arriver_date) %}
+            <div class="form-error">{{ form_errors(form.arriver_date) }}</div>
+        {% endif %}
+    </div>
+
+    
+
+    <div class="mb-3">
+        {{ form_label(form.image, 'Choisissez une image de couverture pour votre Road Trip', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.image) %}
+            <div class="form-error">{{ form_errors(form.image) }}</div>
+        {% endif %}
+        <div class="image-preview">📷</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_label(form.depart_address, 'Adresse de Départ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.depart_address, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.depart_address) %}
+                <div class="form-error">{{ form_errors(form.depart_address) }}</div>
+            {% endif %}
         </div>
-    {% endif %}
+        <div class="col-md-6">
+            {{ form_label(form.arrive_address, 'Adresse d\'arrivée', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.arrive_address, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.arrive_address) %}
+                <div class="form-error">{{ form_errors(form.arrive_address) }}</div>
+            {% endif %}
+        </div>
+    </div>
 
-    {# Début du formulaire #}
-    {{ form_start(form, { 'attr': { 'class': 'form' } }) }}
+    <div class="mb-3">
+        {{ form_label(form.vehicle, 'Véhicule', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
+        {% if form_errors(form.vehicle) %}
+            <div class="form-error">{{ form_errors(form.vehicle) }}</div>
+        {% endif %}
+    </div>
 
-    <label class="form-label">Nom du Road Trip</label>
-    {{ form_widget(form.titre, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.titre) ? '<div class="form-error">' ~ form_errors(form.titre) ~ '</div>' : ''|raw }}
+    <div class="mb-3 mt-4">
+        <button type="button" class="btn add-step-btn w-100">Ajouter une étape</button>
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.description_supplementaire, 'Description supplémentaire', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description_supplementaire, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.description_supplementaire) %}
+            <div class="form-error">{{ form_errors(form.description_supplementaire) }}</div>
+        {% endif %}
+    </div>
 
-    <label class="form-label">Description</label>
-    {{ form_widget(form.description, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.description) ? '<div class="form-error">' ~ form_errors(form.description) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Date de départ</label>
-    {{ form_widget(form.depart_date, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.depart_date) ? '<div class="form-error">' ~ form_errors(form.depart_date) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Date d'arrivée</label>
-    {{ form_widget(form.arriver_date, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.arriver_date) ? '<div class="form-error">' ~ form_errors(form.arriver_date) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Durée du voyage (en jours)</label>
-    {{ form_widget(form.duree, { 'attr': { 'class': 'form-control', 'readonly': 'readonly' } }) }}
-    {{ form_errors(form.duree) ? '<div class="form-error">' ~ form_errors(form.duree) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Image de couverture</label>
-    {{ form_widget(form.image, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.image) ? '<div class="form-error">' ~ form_errors(form.image) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Description supplémentaire</label>
-    {{ form_widget(form.description_supplementaire, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.description_supplementaire) ? '<div class="form-error">' ~ form_errors(form.description_supplementaire) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Image supplémentaire</label>
-    {{ form_widget(form.image_supplementaire, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.image_supplementaire) ? '<div class="form-error">' ~ form_errors(form.image_supplementaire) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Adresse de départ</label>
-    {{ form_widget(form.depart_address, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.depart_address) ? '<div class="form-error">' ~ form_errors(form.depart_address) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Adresse d'arrivée</label>
-    {{ form_widget(form.arrive_address, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.arrive_address) ? '<div class="form-error">' ~ form_errors(form.arrive_address) ~ '</div>' : ''|raw }}
-
-    <label class="form-label">Véhicule</label>
-    {{ form_widget(form.vehicle, { 'attr': { 'class': 'form-control' } }) }}
-    {{ form_errors(form.vehicle) ? '<div class="form-error">' ~ form_errors(form.vehicle) ~ '</div>' : ''|raw }}
-
-    <button type="submit" class="btn btn-primary">Créer</button>
-    <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-secondary">Retour</a>
-
+    <div class="mb-3">
+        {{ form_label(form.image_supplementaire, 'Image supplémentaire', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.image_supplementaire, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.image_supplementaire) %}
+            <div class="form-error">{{ form_errors(form.image_supplementaire) }}</div>
+        {% endif %}
+    </div>
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-back">Retour</a>
+        <button type="submit" class="btn btn-publish">Publier</button>
+    </div>
     {{ form_end(form) }}
+    
 </div>
 {% endblock %}
