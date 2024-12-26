@@ -46,29 +46,28 @@ class RoadTrip
     #[ORM\ManyToOne(inversedBy: 'roadTrips')]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'roadTrips')]
+    #[ORM\ManyToOne(targetEntity: Vehicle::class, inversedBy: 'roadTrips')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Vehicle $vehicle = null;
 
     #[ORM\OneToMany(mappedBy: 'road_trip', targetEntity: Checkpoint::class)]
     private Collection $checkpoints;
 
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description_supplementaire = null;
-
-public function getDescriptionSupplementaire(): ?string
-{
-    return $this->description_supplementaire;
-}
-
-public function setDescriptionSupplementaire(?string $description_supplementaire): static
-{
-    $this->description_supplementaire = $description_supplementaire;
-
-    return $this;
-}
 
     public function __construct()
     {
         $this->checkpoints = new ArrayCollection();
+    }
+    public function getDuree(): ?int
+    {
+        if ($this->depart_date && $this->arriver_date) {
+            $interval = $this->depart_date->diff($this->arriver_date);
+            return $interval->days;
+        }
+
+        return null; // Retourne null si l'une des dates est manquante
     }
 
     public function getId(): ?int
@@ -225,12 +224,15 @@ public function setDescriptionSupplementaire(?string $description_supplementaire
         return $this;
     }
 
-    public function getDuree(): ?int
+    public function getDescriptionSupplementaire(): ?string
     {
-        if ($this->depart_date && $this->arriver_date) {
-            return $this->arriver_date->diff($this->depart_date)->days;
-        }
+        return $this->description_supplementaire;
+    }
 
-        return null;
+    public function setDescriptionSupplementaire(?string $description_supplementaire): static
+    {
+        $this->description_supplementaire = $description_supplementaire;
+
+        return $this;
     }
 }

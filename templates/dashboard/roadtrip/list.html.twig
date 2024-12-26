@@ -160,6 +160,7 @@
                             <td>{{ roadTrip.getDepartDate()|date('d/m/Y') }}</td>
                             <td>{{ roadTrip.getArriverDate()|date('d/m/Y') }}</td>
                             <td>
+                                <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-primary btn-sm">Voir</a>
                                 <a href="{{ path('app_dashboard_roadtrip_edit', { id: roadTrip.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
                                 <form action="{{ path('app_dashboard_roadtrip_delete', { id: roadTrip.id }) }}" method="post" style="display: inline;">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ roadTrip.id) }}">
@@ -174,7 +175,6 @@
 
         <div class="text-center mt-5">
             <a href="{{ path('app_dashboard_roadtrip_create') }}" class="btn btn-primary btn-create">Créer un nouveau Road Trip</a>
-           
         </div>
     </main>
 </div>

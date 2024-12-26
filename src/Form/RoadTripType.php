@@ -3,12 +3,13 @@
 namespace App\Form;
 
 use App\Entity\RoadTrip;
+use App\Entity\Vehicle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType; // Importer ChoiceType
+use Symfony\Bridge\Doctrine\Form\Type\EntityType; // Import correct
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -60,15 +61,11 @@ class RoadTripType extends AbstractType
                 'mapped' => false,
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('vehicle', ChoiceType::class, [
+            ->add('vehicle', EntityType::class, [ // Utilisation de EntityType ici
+                'class' => Vehicle::class,
+                'choice_label' => 'type',
+                'placeholder' => 'Choisissez un véhicule',
                 'label' => 'Véhicule',
-                'choices' => [
-                    'Moto' => 'moto',
-                    'Avion' => 'avion',
-                    'Van' => 'van',
-                    'Voiture' => 'voiture',
-                    'Bus' => 'bus',
-                ],
                 'attr' => ['class' => 'form-select'],
             ]);
     }
