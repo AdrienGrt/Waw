@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ roadTrip.titre }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .cover-image {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+        }
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            margin-top: -15px;
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background-color: #DF6951;
+            border-color: #DF6951;
+        }
+        .btn-primary:hover {
+            background-color: #c85a44;
+            border-color: #c85a44;
+        }
+        .text-primary {
+            color: #DF6951 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Header Image -->
+    <div class="cover-image" style="background-image: url('{{ asset('uploads/images/' ~ roadTrip.image) }}');"></div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Profile and Title -->
+        <div class="text-center">
+            <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="profile-image">
+            <h1 class="mt-3">{{ roadTrip.titre }}</h1>
+        </div>
+
+        <!-- Road Trip Details -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="text-primary">Description</h5>
+                <p>{{ roadTrip.description }}</p>
+                <hr>
+
+                <!-- Details Section -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Véhicule</h6>
+                        <p>{{ roadTrip.vehicle }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Durée</h6>
+                        <p>
+                            {% if roadTrip.duree is not null %}
+                                {{ roadTrip.duree }} jour(s)
+                            {% else %}
+                                Non spécifiée
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Date Section -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Date de départ</h6>
+                        <p>{{ roadTrip.departDate|date('d/m/Y') }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Date d'arrivée</h6>
+                        <p>{{ roadTrip.arriverDate|date('d/m/Y') }}</p>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Address Section -->
+                <div>
+                    <h6 class="text-primary">Adresse de départ</h6>
+                    <p>{{ roadTrip.departAddress }}</p>
+                    <h6 class="text-primary">Adresse d'arrivée</h6>
+                    <p>{{ roadTrip.arriveAddress }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Description -->
+        {% if roadTrip.descriptionSupplementaire %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="text-primary">Description Supplémentaire</h5>
+                    <p>{{ roadTrip.descriptionSupplementaire }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Additional Images -->
+        {% if roadTrip.imageSupplementaire %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="text-primary">Images Supplémentaires</h5>
+                    <div class="row">
+                        {% if roadTrip.imageSupplementaire is iterable %}
+                            {% for image in roadTrip.imageSupplementaire %}
+                                <div class="col-md-4 mb-3">
+                                    <img src="{{ asset('uploads/images/' ~ image) }}" alt="Image supplémentaire" class="img-fluid rounded">
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Si image_supplementaire est une seule image -->
+                            <div class="col-md-4 mb-3">
+                                <img src="{{ asset('uploads/images/' ~ roadTrip.imageSupplementaire) }}" alt="Image supplémentaire" class="img-fluid rounded">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-primary">Retour à la liste</a>
+        </div>
+    </div>
+{% endblock %}

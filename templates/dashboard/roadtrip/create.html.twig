@@ -147,9 +147,13 @@
             </div>
         </div>
 
-        <div class="mb-3 mt-4">
-            <button type="button" class="btn btn-primary w-100">Ajouter une étape</button>
-        </div>
+        <div id="steps-container" class="mb-3">
+    
+</div>
+
+<div class="mb-3 mt-4">
+    <button type="button" id="add-step-btn" class="btn btn-primary w-100">Ajouter une étape</button>
+</div>
 
         <div class="mb-3">
             {{ form_label(form.description_supplementaire, 'Description Supplémentaire', {'label_attr': {'class': 'form-label'}}) }}
@@ -189,6 +193,59 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        let stepIndex = 0; // Compteur pour les étapes dynamiques
+
+        document.getElementById('add-step-btn').addEventListener('click', function () {
+            const stepsContainer = document.getElementById('steps-container');
+
+            // Créer un conteneur pour la nouvelle étape
+            const stepDiv = document.createElement('div');
+            stepDiv.classList.add('row', 'mb-3');
+            stepDiv.setAttribute('id', `step_${stepIndex}`);
+
+            // Créer le champ "Adresse de départ"
+            const departDiv = document.createElement('div');
+            departDiv.classList.add('col-md-5');
+            departDiv.innerHTML = `
+                <label for="step_depart_${stepIndex}" class="form-label">Adresse de départ</label>
+                <input type="text" id="step_depart_${stepIndex}" name="steps[${stepIndex}][depart]" class="form-control" />
+            `;
+
+            // Créer le champ "Adresse d'arrivée"
+            const arriveDiv = document.createElement('div');
+            arriveDiv.classList.add('col-md-5');
+            arriveDiv.innerHTML = `
+                <label for="step_arrive_${stepIndex}" class="form-label">Adresse d'arrivée</label>
+                <input type="text" id="step_arrive_${stepIndex}" name="steps[${stepIndex}][arrive]" class="form-control" />
+            `;
+
+            // Créer un bouton pour supprimer l'étape
+            const deleteDiv = document.createElement('div');
+            deleteDiv.classList.add('col-md-2', 'd-flex', 'align-items-end');
+            deleteDiv.innerHTML = `
+                <button type="button" class="btn btn-danger w-100" onclick="removeStep(${stepIndex})">X</button>
+            `;
+
+            // Ajouter les champs et le bouton au conteneur de l'étape
+            stepDiv.appendChild(departDiv);
+            stepDiv.appendChild(arriveDiv);
+            stepDiv.appendChild(deleteDiv);
+
+            // Ajouter l'étape au conteneur principal
+            stepsContainer.appendChild(stepDiv);
+
+            // Incrémenter l'index pour la prochaine étape
+            stepIndex++;
+        });
+
+        function removeStep(index) {
+            const stepToRemove = document.getElementById(`step_${index}`);
+            if (stepToRemove) {
+                stepToRemove.remove();
+            }
+        }
+    </script>
     <script>
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');

@@ -60,6 +60,7 @@ class RoadTrip
     {
         $this->checkpoints = new ArrayCollection();
     }
+
     public function getDuree(): ?int
     {
         if ($this->depart_date && $this->arriver_date) {
@@ -67,8 +68,12 @@ class RoadTrip
             return $interval->days;
         }
 
-        return null; // Retourne null si l'une des dates est manquante
+        return null;
     }
+
+    // Getters et setters (voir contenu initial pour détails)
+
+
 
     public function getId(): ?int
     {
