@@ -5,174 +5,153 @@
 {% block body %}
 <style>
     body {
-        background-color: #f8f3eb; /* Couleur crème */
-        background-image: url('https://images.unsplash.com/photo-1500239038240-9b3b8bac73c3?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Remplacez avec le lien de votre motif */
-        background-size: cover; /* Ajuste l'image pour remplir toute la zone */
-        background-repeat: no-repeat; /* Pas de répétition */
-        background-attachment: fixed; /* Reste fixe pendant le scroll */
+        background-color: #f8f9fa;
+        font-family: 'Poppins', sans-serif;
     }
     .hero-section {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        padding: 2rem 1rem;
-    }
-    .hero-text {
-        max-width: 80%;
-        text-align:center;
-        margin-left:9%;
-        margin-top:5%;
-    }
-    .text-primary{
-        color: #D66A50;
+        background-image: url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFuZHNjYXBlfGVufDB8fDB8fHww');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 0;
+        color: #fff;
+        text-align: center;
     }
     .hero-text h1 {
-        font-size: 2.5rem;
-        font-weight: bold;
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
     }
-    .hero-text p {
-        margin: 1rem 0;
-        font-size: 1.2rem;
+    .text-primary {
+        color: #D66A50 !important;
     }
-    .hero-image img {
-        margin-top:3%;
-        max-width: 100%;
-        border-radius: 15px;
-        height: 20%;
+    .btn-primary {
+        background-color: #D66A50;
+        border-color: #D66A50;
+    }
+    .btn-primary:hover {
+        background-color: #c15a42;
+        border-color: #c15a42;
     }
     .road-trip-section {
-        padding: 2rem 1rem;
+        padding: 80px 0;
+        background-color: #fff;
     }
     .features-section {
-        padding: 2rem 1rem;
-        background-color: #f9f9f9;
+        padding: 80px 0;
+        background-color: #F5F5DC;
     }
-    .features-section .icon-box {
-        width: 50px;
-        height: 50px;
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .icon-box {
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 1rem;
+        margin-right: 20px;
+        font-size: 24px;
     }
-    .features-section .icon-box.bg-warning {
-        background-color: #ffc107;
-        color: #fff;
-    }
-    .features-section .icon-box.bg-danger {
-        background-color: #dc3545;
-        color: #fff;
-    }
-    .features-section .icon-box.bg-primary {
-        background-color: #007bff;
+    .cta-section {
+        background-color: #D66A50;
+        padding: 60px 0;
         color: #fff;
     }
 </style>
 
 <!-- Hero Section -->
-<div class="hero-section container">
-    <div class="hero-text">
-        <p class="text-uppercase text-muted">Explorez, Partagez, Vivez vos rêves sur la route.</p>
-        <h1>Partager vos <span class="text-primary">expérience</span> inoubliable avec vos proches et le monde entier</h1>
-        
-    </div>
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Hero Image">
+<div class="hero-section">
+    <div class="container">
+        <h1>Partagez vos <span class="text-primary">expériences</span> inoubliables</h1>
+        <p class="lead mb-4">Explorez, Partagez, Vivez vos rêves sur la route.</p>
+        <a href="#" class="btn btn-primary btn-lg">Commencez l'aventure</a>
     </div>
 </div>
 
 <!-- Road Trip Section -->
-<div class="road-trip-section container">
-    <h2 class="text-center mb-5">Top Road Trip</h2>
-    <div id="roadTripCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="row justify-content-center">
-                    <div class="col-md-3">
-                        <div class="card">
-                            <img src="https://via.placeholder.com/300x200" alt="Road Trip" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">France-Italy</h5>
-                                <p class="card-text">Durée : 6 jours</p>
-                            </div>
-                        </div>
+<div class="road-trip-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Top Road Trips</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1535077531369-640f854994e8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">France-Italie</h5>
+                        <p class="card-text">Durée : 6 jours</p>
                     </div>
-                    
-                    <div class="col-md-3">
-                        <div class="card">
-                            <img src="https://via.placeholder.com/300x200" alt="Road Trip" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">France-Italy</h5>
-                                <p class="card-text">Durée : 6 jours</p>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1535077531369-640f854994e8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Espagne-Portugal</h5>
+                        <p class="card-text">Durée : 8 jours</p>
                     </div>
-                    
-                    <div class="col-md-3">
-                        <div class="card">
-                            <img src="https://via.placeholder.com/300x200" alt="Road Trip" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">France-Italy</h5>
-                                <p class="card-text">Durée : 6 jours</p>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1541262219680-541c15f59e15?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Allemagne-Autriche</h5>
+                        <p class="card-text">Durée : 7 jours</p>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#roadTripCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#roadTripCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
     </div>
 </div>
 
 <!-- Features Section -->
-<div class="features-section container my-5">
-    <h2 class="text-center text-primary">Facile et Rapide</h2>
-    <h3 class="text-center fw-bold mb-5">Partager Vos Road Trip Facilement</h3>
-    <div class="row align-items-center">
-        <!-- Left Content -->
-        <div class="col-md-6">
-            <div class="d-flex mb-4">
-                <div class="icon-box bg-warning">
-                    <i class="fas fa-user-plus"></i>
+<div class="features-section">
+    <div class="container">
+        <h2 class="text-center mb-5">Partagez Vos Road Trips <span class="text-primary">Facilement</span></h2>
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="d-flex mb-5">
+                    <div class="icon-box" style="background-color: #D66A50; color: white;">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h5>Inscrivez-vous</h5>
+                        <p>Créez votre compte en quelques clics et commencez votre aventure.</p>
+                    </div>
                 </div>
-                <div>
-                    <h5 class="fw-bold">Inscrivez-vous</h5>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna, tortor tempus.</p>
+                <div class="d-flex mb-5">
+                    <div class="icon-box" style="background-color: #D66A50; color: white;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h5>Remplissez votre carnet</h5>
+                        <p>Ajoutez vos voyages, photos et expériences uniques.</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="icon-box" style="background-color: #D66A50; color: white;">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div>
+                        <h5>Partagez avec vos proches</h5>
+                        <p>Invitez famille et amis à découvrir vos aventures.</p>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex mb-4">
-                <div class="icon-box bg-danger">
-                    <i class="fas fa-book"></i>
+            <div class="col-md-6">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1534103076216-0de55b38e52d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Berlin-Vienne</h5>
+                        <p class="card-text">Durée : 28 jours</p>
+                    </div>
                 </div>
-                <div>
-                    <h5 class="fw-bold">Remplissez le carnet avec vos voyages</h5>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna, tortor tempus.</p>
-                </div>
-            </div>
-            <div class="d-flex">
-                <div class="icon-box bg-primary">
-                    <i class="fas fa-share-alt"></i>
-                </div>
-                <div>
-                    <h5 class="fw-bold">Partagez-le avec vos proches</h5>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna, tortor tempus.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Content -->
-        <div class="col-md-6 text-center">
-            <img src="https://via.placeholder.com/400x300" alt="Illustration" class="img-fluid rounded">
-            <div class="mt-3">
-                <h5 class="fw-bold">Berlin-Vienne</h5>
-                <p class="text-muted">Durée : 28 jours</p>
             </div>
         </div>
     </div>
@@ -180,6 +159,9 @@
 
 <!-- Call to Action Section -->
 <div class="cta-section text-center">
-    <button class="btn btn-primary" style="background-color: #D66A50; border: none;">S'INSCRIRE</button>
+    <div class="container">
+        <h2 class="mb-4">Prêt à commencer votre aventure ?</h2>
+        <a href="#" class="btn btn-light btn-lg">S'INSCRIRE MAINTENANT</a>
+    </div>
 </div>
 {% endblock %}
