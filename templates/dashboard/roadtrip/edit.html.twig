@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un Road Trip{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-container .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .form-container .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .form-container .form-control.is-invalid {
+        border-color: #e53e3e;
+    }
+
+    .form-container .form-error {
+        color: #e53e3e;
+        font-size: 14px;
+        margin-top: -15px;
+        margin-bottom: 10px;
+    }
+
+    .form-container .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .form-container .btn-primary {
+        background-color: #4299e1;
+        color: #ffffff;
+    }
+
+    .form-container .btn-primary:hover {
+        background-color: #3182ce;
+    }
+
+    .form-container .btn-secondary {
+        background-color: #edf2f7;
+        color: #4a5568;
+        margin-top: 10px;
+    }
+
+    .form-container .btn-secondary:hover {
+        background-color: #e2e8f0;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1>Modifier un Road Trip</h1>
+
+    {# Affiche les erreurs globales du formulaire #}
+    {% if form_errors(form) %}
+        <div class="form-error">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    {# Début du formulaire #}
+    {{ form_start(form, { 'attr': { 'class': 'form' } }) }}
+
+    <label class="form-label">Nom du Road Trip</label>
+    {{ form_widget(form.titre, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.titre) ? '<div class="form-error">' ~ form_errors(form.titre) ~ '</div>' : ''|raw }}
+
+    <label class="form-label">Description</label>
+    {{ form_widget(form.description, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.description) ? '<div class="form-error">' ~ form_errors(form.description) ~ '</div>' : ''|raw }}
+
+    <label class="form-label">Date de départ</label>
+    {{ form_widget(form.depart_date, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.depart_date) ? '<div class="form-error">' ~ form_errors(form.depart_date) ~ '</div>' : ''|raw }}
+
+    <label class="form-label">Date d'arrivée</label>
+    {{ form_widget(form.arriver_date, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.arriver_date) ? '<div class="form-error">' ~ form_errors(form.arriver_date) ~ '</div>' : ''|raw }}
+
+   
+    <label class="form-label">Image de couverture</label>
+    {{ form_widget(form.image, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.image) ? '<div class="form-error">' ~ form_errors(form.image) ~ '</div>' : ''|raw }}
+
+    <label class="form-label">Adresse de départ</label>
+    {{ form_widget(form.depart_address, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.depart_address) ? '<div class="form-error">' ~ form_errors(form.depart_address) ~ '</div>' : ''|raw }}
+
+    <label class="form-label">Adresse d'arrivée</label>
+    {{ form_widget(form.arrive_address, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.arrive_address) ? '<div class="form-error">' ~ form_errors(form.arrive_address) ~ '</div>' : ''|raw }}
+
+    <label class="form-label">Véhicule</label>
+    {{ form_widget(form.vehicle, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.vehicle) ? '<div class="form-error">' ~ form_errors(form.vehicle) ~ '</div>' : ''|raw }}
+
+    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-secondary">Retour</a>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}

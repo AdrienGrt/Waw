@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/dashboard')]  // Préfixe pour toutes les routes de ce contrôleur
+#[Route('/dashboard')] // Préfixe pour toutes les routes de ce contrôleur
 class DashboardController extends AbstractController
 {
     // Page principale du dashboard
-    #[Route('/', name: 'app_dashboard')]  // Route pour la page principale
+    #[Route('/', name: 'app_dashboard', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('dashboard/index.html.twig', [
@@ -26,7 +26,7 @@ class DashboardController extends AbstractController
     }
 
     // Liste des utilisateurs
-    #[Route('/users', name: 'app_dashboard_users')]
+    #[Route('/users', name: 'app_dashboard_users', methods: ['GET'])]
     public function listUsers(UserRepository $userRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER'); // Limite l'accès aux utilisateurs authentifiés
@@ -84,35 +84,18 @@ class DashboardController extends AbstractController
         return $this->redirectToRoute('app_dashboard_users'); // Redirection vers la liste des utilisateurs
     }
 
-    // Créer un road trip
-    #[Route('/roadtrip/create', name: 'app_dashboard_roadtrip_create')]
-    public function createRoadTrip(Request $request, EntityManagerInterface $em): Response
+    // Liste des road trips
+    #[Route('/roadtrips', name: 'app_dashboard_roadtrip_list', methods: ['GET'])]
+    public function listRoadTrips(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'); // Limite l'accès aux utilisateurs authentifiés
+        $user = $this->getUser(); // Récupérer l'utilisateur connecté
+        $roadTrips = $user->getRoadTrips(); // Obtenir les road trips associés à cet utilisateur
 
-        $roadTrip = new RoadTrip(); // Créer un nouvel objet RoadTrip
-
-        $form = $this->createForm(RoadTripType::class, $roadTrip); // Créer le formulaire pour RoadTrip
-
-        $form->handleRequest($request); // Traiter la requête
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser(); // Récupérer l'utilisateur connecté
-            $roadTrip->setUser($user); // Associer l'utilisateur au road trip
-
-            $em->persist($roadTrip); // Persister les données en base
-            $em->flush();
-
-            // Ajouter un message de succès
-            $this->addFlash('success', 'Le road trip a été créé avec succès.');
-
-            // Rediriger vers le tableau de bord
-            return $this->redirectToRoute('app_dashboard'); // Redirection vers le tableau de bord
-        }
-
-        // Afficher le formulaire
-        return $this->render('dashboard/roadtrip/create.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('dashboard/roadtrip/list.html.twig', [
+            'roadTrips' => $roadTrips,
         ]);
     }
+
+    // Modifier un road trip
+   
 }
