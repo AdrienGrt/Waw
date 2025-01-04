@@ -2,49 +2,116 @@
 
 {% block title %}Inscription{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #DF6951;
+            border-color: #DF6951;
+        }
+        .btn-primary:hover {
+            background-color: #DF6951;
+            border-color: #DF6951;
+        }
+        .form-control:focus {
+            border-color: #DF6951;
+            box-shadow: 0 0 0 0.2rem rgba(223, 105, 81, 0.25);
+        }
+        .text-primary {
+            color: #DF6951 !important;
+        }
+        .image-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bg-image {
+            height: 80%;
+            width: 80%;
+            margin-left: -15%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-<div class="container mt-5">
-    <h1 class="text-center">Créer un compte</h1>
+<div class="container-fluid min-vh-100 d-flex align-items-center">
+    <div class="row w-100">
+        <div class="col-lg-6 d-flex justify-content-center align-items-center p-5">
+            <div class="form-container p-5" style="max-width: 500px;">
+                <h2 class="fw-bold mb-4 text-primary">Rejoignez-nous</h2>
+                <p class="mb-4 text-muted">Créez votre compte en quelques clics.</p>
 
-    <!-- Affiche les erreurs globaux du formulaire -->
-    {% if form_errors(registrationForm) %}
-        <div class="alert alert-danger">
-            {{ form_errors(registrationForm) }}
+                {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+                    {{ form_row(registrationForm.username, {
+                        'label': 'Nom d\'utilisateur',
+                        'attr': { 
+                            'placeholder': 'Entrez votre nom d\'utilisateur',
+                            'class': 'form-control form-control-lg rounded-pill border-0 bg-light mb-4'
+                        }
+                    }) }}
+
+                    {{ form_row(registrationForm.email, {
+                        'label': 'Adresse e-mail',
+                        'attr': { 
+                            'placeholder': 'Entrez votre adresse e-mail',
+                            'class': 'form-control form-control-lg rounded-pill border-0 bg-light mb-4'
+                        }
+                    }) }}
+
+                    {{ form_row(registrationForm.plainPassword, {
+                        'label': 'Mot de passe',
+                        'attr': { 
+                            'placeholder': 'Choisissez un mot de passe sécurisé',
+                            'class': 'form-control form-control-lg rounded-pill border-0 bg-light mb-4'
+                        }
+                    }) }}
+
+                    {{ form_row(registrationForm.agreeTerms, {
+                        'label': 'J\'accepte les conditions générales et la politique de confidentialité.',
+                        'label_attr': {'class': 'form-check-label'},
+                        'attr': {'class': 'form-check-input me-2'}
+                    }) }}
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill mb-4 mt-3">Créer mon compte</button>
+
+                {{ form_end(registrationForm) }}
+
+                <div class="text-center">
+                    <p class="text-muted mb-4">Ou inscrivez-vous avec</p>
+                    <button class="btn btn-outline-dark btn-lg rounded-pill w-100 mb-3">
+                        <i class="fab fa-google me-2"></i> Google
+                    </button>
+                    <button class="btn btn-outline-dark btn-lg rounded-pill w-100">
+                        <i class="fab fa-apple me-2"></i> Apple
+                    </button>
+                </div>
+
+                <p class="text-center mt-4">
+                    Déjà membre ? <a href="{{ path('app_login') }}" class="text-primary text-decoration-none">Connectez-vous</a>
+                </p>
+            </div>
         </div>
-    {% endif %}
 
-    <!-- Début du formulaire -->
-    {{ form_start(registrationForm) }}
-    
-        <div class="mb-3">
-            {{ form_label(registrationForm.username) }}
-            {{ form_widget(registrationForm.username, { 'attr': { 'class': 'form-control' } }) }}
-            {{ form_errors(registrationForm.username) }}
+        <div class="col-lg-6 d-none d-lg-block p-0">
+            <div class="image-container">
+                <div class="bg-image" 
+                     style="background-image: url('https://images.unsplash.com/photo-1701569920445-c61b9e795d64?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            {{ form_label(registrationForm.email) }}
-            {{ form_widget(registrationForm.email, { 'attr': { 'class': 'form-control' } }) }}
-            {{ form_errors(registrationForm.email) }}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(registrationForm.plainPassword) }}
-            {{ form_widget(registrationForm.plainPassword, { 
-                'attr': { 'class': 'form-control' },
-                'label': 'Mot de passe'
-            }) }}
-            {{ form_errors(registrationForm.plainPassword) }}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(registrationForm.agreeTerms) }}
-            {{ form_widget(registrationForm.agreeTerms, { 'attr': { 'class': 'form-check-input' } }) }}
-            {{ form_errors(registrationForm.agreeTerms) }}
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
-    
-    {{ form_end(registrationForm) }}
+    </div>
 </div>
 {% endblock %}

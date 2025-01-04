@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Entity;
 
@@ -18,10 +18,7 @@ class Vehicle
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
-    /**
-     * @var Collection<int, RoadTrip>
-     */
-    #[ORM\OneToMany(targetEntity: RoadTrip::class, mappedBy: 'vehicle')]
+    #[ORM\OneToMany(mappedBy: 'vehicle', targetEntity: RoadTrip::class)]
     private Collection $roadTrips;
 
     public function __construct()
@@ -46,9 +43,6 @@ class Vehicle
         return $this;
     }
 
-    /**
-     * @return Collection<int, RoadTrip>
-     */
     public function getRoadTrips(): Collection
     {
         return $this->roadTrips;
@@ -67,12 +61,17 @@ class Vehicle
     public function removeRoadTrip(RoadTrip $roadTrip): static
     {
         if ($this->roadTrips->removeElement($roadTrip)) {
-            // set the owning side to null (unless already changed)
             if ($roadTrip->getVehicle() === $this) {
                 $roadTrip->setVehicle(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        // Retourne une représentation textuelle de l'objet
+        return $this->type ?? 'Unknown Vehicle';
     }
 }

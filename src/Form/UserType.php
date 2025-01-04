@@ -6,7 +6,6 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,8 +24,9 @@ class UserType extends AbstractType
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
                 'multiple' => true, // Permet de sélectionner plusieurs rôles
-                'expanded' => true, // Affiche les choix sous forme de cases à cocher
+                'expanded' => false, // Utilise une liste déroulante au lieu de cases à cocher
                 'label' => 'Rôles',
+                'attr' => ['class' => 'form-control'], // Ajout de style pour harmoniser
             ]);
     }
 
