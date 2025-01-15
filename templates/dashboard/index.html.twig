@@ -10,7 +10,6 @@
         font-family: 'Arial', sans-serif;
     }
 
-    /* Disposition générale */
     .dashboard-container {
         display: flex;
         flex-direction: row;
@@ -18,31 +17,29 @@
         overflow: hidden;
     }
 
-    
-    /* Barre latérale */
     .sidebar {
         background-color: #1a233a;
         color: #c3c7d1;
         width: 220px;
         flex-shrink: 0;
-        padding: 20px 15px; /* Augmentation de l'espace interne */
+        padding: 20px 15px;
         display: flex;
         flex-direction: column;
     }
 
     .sidebar ul {
-        list-style: none; /* Supprime les points */
+        list-style: none;
         padding: 0;
         margin: 0;
     }
 
     .sidebar a {
-        text-decoration: none; /* Supprime la décoration */
+        text-decoration: none;
         display: block;
-        padding: 12px 20px; /* Ajout d'espacement interne */
+        padding: 12px 20px;
         color: #c3c7d1;
         border-radius: 4px;
-        margin-bottom: 10px; /* Espacement entre les liens */
+        margin-bottom: 10px;
     }
 
     .sidebar a:hover, .sidebar a.active {
@@ -50,17 +47,10 @@
         color: #ffffff;
     }
 
-    /* Contenu principal */
     .dashboard-content {
         flex-grow: 1;
         padding: 20px;
         overflow-y: auto;
-    }
-
-    .dashboard-content h1 {
-        font-size: 28px;
-        font-weight: bold;
-        margin-bottom: 20px;
     }
 
     .dashboard-cards {
@@ -69,7 +59,6 @@
         gap: 20px;
     }
 
-    /* Style des cartes */
     .card {
         background: #ffffff;
         border-radius: 8px;
@@ -84,46 +73,6 @@
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .card h5 {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 15px 0;
-        color: #4a5568;
-    }
-
-    .card p {
-        font-size: 14px;
-        color: #718096;
-        margin-bottom: 20px;
-    }
-
-    .card a {
-        background-color: #4299e1;
-        color: #ffffff;
-        text-decoration: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .card a:hover {
-        background-color: #3182ce;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 8px 16px;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 15%;
-        text-decoration: none;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
     .btn-primary {
         background-color: green;
         color: #ffffff;
@@ -134,65 +83,51 @@
         background-color: #3182ce;
         box-shadow: 0 6px 12px rgba(66, 153, 225, 0.4);
     }
-
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="dashboard-container">
-    <!-- Barre latérale -->
     <nav class="sidebar">
         <ul>
-            <li class="nav-item">
-                <a class="active" href="{{ path('app_dashboard') }}">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('app_dashboard_users') }}">Utilisateurs</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('app_dashboard_roadtrip_list') }}">Road Trips</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ path('app_dashboard_roadtrip_create') }}">Créer un Road Trip</a>
-            </li>
+            <li><a class="active" href="{{ path('app_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ path('app_dashboard_users') }}">Utilisateurs</a></li>
+            <li><a href="{{ path('app_dashboard_roadtrip_list') }}">Road Trips</a></li>
+            <li><a href="{{ path('app_dashboard_roadtrip_create') }}">Créer un Road Trip</a></li>
         </ul>
     </nav>
 
-    <!-- Contenu principal -->
     <main class="dashboard-content">
         <h1>Bienvenue sur votre tableau de bord</h1>
 
         <div class="dashboard-cards">
-            <!-- Carte Utilisateurs -->
             <div class="card">
                 <h5>Utilisateurs</h5>
                 <p>Gérez les utilisateurs de votre plateforme.</p>
                 <a href="{{ path('app_dashboard_users') }}">Voir les utilisateurs</a>
             </div>
 
-            <!-- Carte Road Trips -->
             <div class="card">
                 <h5>Road Trips</h5>
-                <p>Gérez les roads trips existants de votre site.</p>
+                <p>Gérez les road trips existants de votre site.</p>
                 <a href="{{ path('app_dashboard_roadtrip_list') }}">Voir les road trips</a>
             </div>
 
-            <!-- Carte Créer un Road Trip -->
             <div class="card">
                 <h5>Créer un Road Trip</h5>
                 <p>Lancez un nouveau voyage dès maintenant.</p>
                 <a href="{{ path('app_dashboard_roadtrip_create') }}">Créer un road trip</a>
             </div>
 
-            <!-- Carte Statistiques -->
             <div class="card">
                 <h5>Statistiques</h5>
                 <p>Analysez les statistiques de votre activité.</p>
                 <a href="#">Voir les stats</a>
             </div>
         </div>
+
         <div class="text-center mt-4">
-            <a href="{{ path('app_home') }}" class="btn btn-primary btn-create">Retour à la page d'accueil</a>
+            <a href="{{ path('app_home') }}" class="btn btn-primary">Retour à la page d'accueil</a>
         </div>
     </main>
 </div>

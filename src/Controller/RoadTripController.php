@@ -16,13 +16,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/roadtrip')] // Préfixe pour toutes les routes de ce contrôleur
 class RoadTripController extends AbstractController
 {
-    #[Route('/', name: 'app_roadtrip_controller', methods: ['GET'])]
-    public function index(): Response
-    {
-        return $this->render('roadtrip_controller/index.html.twig', [
-            'controller_name' => 'RoadTripController',
-        ]);
-    }
 
     #[Route('/roadtrip/{id}/edit', name: 'app_dashboard_roadtrip_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editRoadTrip(int $id, EntityManagerInterface $em, Request $request, SluggerInterface $slugger): Response
@@ -129,4 +122,16 @@ class RoadTripController extends AbstractController
             'roadTrip' => $roadTrip,
         ]);
     }
+
+    #[Route('/roadtrips', name: 'app_roadtrip_list', methods: ['GET'])]
+    public function listAllRoadTrips(EntityManagerInterface $em): Response
+    {
+        $roadTrips = $em->getRepository(RoadTrip::class)->findAll();
+    
+        return $this->render('roadtrip_controller/index.html.twig', [
+            'roadTrips' => $roadTrips,
+        ]);
+    }
+    
+
 }

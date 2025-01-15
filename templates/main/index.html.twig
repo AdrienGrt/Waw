@@ -2,12 +2,14 @@
 
 {% block title %}Accueil{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+{{ parent() }}
 <style>
     body {
         background-color: #f8f9fa;
         font-family: 'Poppins', sans-serif;
     }
+
     .hero-section {
         background-image: url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFuZHNjYXBlfGVufDB8fDB8fHww');
         background-size: cover;
@@ -16,38 +18,53 @@
         color: #fff;
         text-align: center;
     }
+
     .hero-text h1 {
         font-size: 3.5rem;
         font-weight: 700;
         margin-bottom: 20px;
     }
+
     .text-primary {
         color: #D66A50 !important;
     }
+
     .btn-primary {
         background-color: #D66A50;
         border-color: #D66A50;
     }
+
     .btn-primary:hover {
         background-color: #c15a42;
         border-color: #c15a42;
     }
+
     .road-trip-section {
         padding: 80px 0;
         background-color: #fff;
     }
-    .features-section {
-        padding: 80px 0;
-        background-color: #F5F5DC;
-    }
+
     .card {
         border: none;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
     }
+
     .card:hover {
         transform: translateY(-5px);
     }
+
+    .card img {
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .features-section {
+        padding: 80px 0;
+        background-color: #F5F5DC;
+    }
+
     .icon-box {
         width: 60px;
         height: 60px;
@@ -58,13 +75,16 @@
         margin-right: 20px;
         font-size: 24px;
     }
+
     .cta-section {
         background-color: #D66A50;
         padding: 60px 0;
         color: #fff;
     }
 </style>
+{% endblock %}
 
+{% block body %}
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="container">
@@ -79,33 +99,20 @@
     <div class="container">
         <h2 class="text-center mb-5">Top Road Trips</h2>
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1535077531369-640f854994e8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">France-Italie</h5>
-                        <p class="card-text">Durée : 6 jours</p>
+            {% for roadTrip in roadTrips %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ roadTrip.image ? asset('uploads/' ~ roadTrip.image) : 'https://via.placeholder.com/300x200' }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ roadTrip.titre }}</h5>
+                            <p class="card-text">Durée : {{ roadTrip.getDuree() ?? 'Non spécifiée' }} jours</p>
+                            <p class="card-text">Véhicule : {{ roadTrip.vehicle.type ?? 'Non spécifié' }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1535077531369-640f854994e8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Espagne-Portugal</h5>
-                        <p class="card-text">Durée : 8 jours</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1541262219680-541c15f59e15?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHJvYWR0cmlwfGVufDB8fDB8fHww" alt="Road Trip" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">Allemagne-Autriche</h5>
-                        <p class="card-text">Durée : 7 jours</p>
-                    </div>
-                </div>
-            </div>
+            {% else %}
+                <p class="text-center">Aucun road trip disponible pour le moment.</p>
+            {% endfor %}
         </div>
     </div>
 </div>
