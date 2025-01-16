@@ -45,39 +45,17 @@
             color: #DF6951;
             background-color: #f8f9fa;
             border: 2px dashed #DF6951;
-            position: relative;
-        }
-        .image-preview:empty {
-            font-size: 40px;
-            color: #DF6951;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .image-preview .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: rgba(255, 0, 0, 0.6);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            cursor: pointer;
-        }
-        .image-preview:hover .delete-btn {
-            opacity: 1;
         }
         .image-gallery {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
+            flex-wrap: wrap;
+        }
+        .image-gallery img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
         }
     </style>
 {% endblock %}
@@ -92,93 +70,54 @@
         <div class="mb-3">
             {{ form_label(form.titre, 'Nom du Road Trip', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
-            {% if form_errors(form.titre) %}
-                <div class="form-error">{{ form_errors(form.titre) }}</div>
-            {% endif %}
         </div>
 
         <div class="mb-3">
             {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-            {% if form_errors(form.description) %}
-                <div class="form-error">{{ form_errors(form.description) }}</div>
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(form.depart_date, 'Date de départ', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.depart_date, {'attr': {'class': 'form-control'}}) }}
-            {% if form_errors(form.depart_date) %}
-                <div class="form-error">{{ form_errors(form.depart_date) }}</div>
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(form.arriver_date, 'Date d\'arrivée', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.arriver_date, {'attr': {'class': 'form-control'}}) }}
-            {% if form_errors(form.arriver_date) %}
-                <div class="form-error">{{ form_errors(form.arriver_date) }}</div>
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(form.image, 'Image de couverture', {'label_attr': {'class': 'form-label'}}) }}
-            <div class="image-preview" id="imagePreview">📷</div>
-            {{ form_widget(form.image, {'attr': {'class': 'form-control', 'onchange': 'previewImage(this);'}}) }}
-            {% if form_errors(form.image) %}
-                <div class="form-error">{{ form_errors(form.image) }}</div>
-            {% endif %}
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 {{ form_label(form.depart_address, 'Adresse de Départ', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.depart_address, {'attr': {'class': 'form-control', 'id': 'address_depart'}}) }}
-                {% if form_errors(form.depart_address) %}
-                    <div class="form-error">{{ form_errors(form.depart_address) }}</div>
-                {% endif %}
+                {{ form_widget(form.depart_address, {'attr': {'class': 'form-control'}}) }}
             </div>
             <div class="col-md-6">
-                {{ form_label(form.arrive_address, 'Adresse d\'arrivée', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.arrive_address, {'attr': {'class': 'form-control', 'id': 'address_arrive'}}) }}
-                {% if form_errors(form.arrive_address) %}
-                    <div class="form-error">{{ form_errors(form.arrive_address) }}</div>
-                {% endif %}
+                {{ form_label(form.arrive_address, 'Adresse d\'Arrivée', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.arrive_address, {'attr': {'class': 'form-control'}}) }}
             </div>
         </div>
 
-        <div id="steps-container" class="mb-3">
-    
-</div>
+        <div class="mb-3">
+            {{ form_label(form.depart_date, 'Date de Départ', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.depart_date, {'attr': {'class': 'form-control'}}) }}
+        </div>
 
-<div class="mb-3 mt-4">
-    <button type="button" id="add-step-btn" class="btn btn-primary w-100">Ajouter une étape</button>
-</div>
+        <div class="mb-3">
+            {{ form_label(form.arriver_date, 'Date d\'Arrivée', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.arriver_date, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.image, 'Image Principale', {'label_attr': {'class': 'form-label'}}) }}
+            <div class="image-preview" id="imagePreview">📷</div>
+            {{ form_widget(form.image, {'attr': {'class': 'form-control', 'onchange': 'previewImage(this);'}}) }}
+        </div>
 
         <div class="mb-3">
             {{ form_label(form.description_supplementaire, 'Description Supplémentaire', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.description_supplementaire, {'attr': {'class': 'form-control'}}) }}
-            {% if form_errors(form.description_supplementaire) %}
-                <div class="form-error">{{ form_errors(form.description_supplementaire) }}</div>
-            {% endif %}
         </div>
 
         <div class="mb-3">
-            {{ form_label(form.image_supplementaire, 'Images Supplémentaires (Max 10)', {'label_attr': {'class': 'form-label'}}) }}
-            <div class="image-preview" id="extraImagePreview">📷</div>
-            {{ form_widget(form.image_supplementaire, {'attr': {'class': 'form-control', 'onchange': 'previewExtraImages(this);', 'multiple': 'multiple'}}) }}
-            {% if form_errors(form.image_supplementaire) %}
-                <div class="form-error">{{ form_errors(form.image_supplementaire) }}</div>
-            {% endif %}
+            {{ form_label(form.image_supplementaire, 'Photos Supplémentaires', {'label_attr': {'class': 'form-label'}}) }}
             <div class="image-gallery" id="imageGallery"></div>
+            {{ form_widget(form.image_supplementaire, {'attr': {'class': 'form-control', 'multiple': true, 'onchange': 'previewExtraImages(this);'}}) }}
         </div>
 
         <div class="mb-3">
             {{ form_label(form.vehicle, 'Choix du Véhicule', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
-            {% if form_errors(form.vehicle) %}
-                <div class="form-error">{{ form_errors(form.vehicle) }}</div>
-            {% endif %}
         </div>
 
         <div class="d-flex justify-content-between mt-4">
@@ -194,59 +133,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        let stepIndex = 0; // Compteur pour les étapes dynamiques
-
-        document.getElementById('add-step-btn').addEventListener('click', function () {
-            const stepsContainer = document.getElementById('steps-container');
-
-            // Créer un conteneur pour la nouvelle étape
-            const stepDiv = document.createElement('div');
-            stepDiv.classList.add('row', 'mb-3');
-            stepDiv.setAttribute('id', `step_${stepIndex}`);
-
-            // Créer le champ "Adresse de départ"
-            const departDiv = document.createElement('div');
-            departDiv.classList.add('col-md-5');
-            departDiv.innerHTML = `
-                <label for="step_depart_${stepIndex}" class="form-label">Adresse de départ</label>
-                <input type="text" id="step_depart_${stepIndex}" name="steps[${stepIndex}][depart]" class="form-control" />
-            `;
-
-            // Créer le champ "Adresse d'arrivée"
-            const arriveDiv = document.createElement('div');
-            arriveDiv.classList.add('col-md-5');
-            arriveDiv.innerHTML = `
-                <label for="step_arrive_${stepIndex}" class="form-label">Adresse d'arrivée</label>
-                <input type="text" id="step_arrive_${stepIndex}" name="steps[${stepIndex}][arrive]" class="form-control" />
-            `;
-
-            // Créer un bouton pour supprimer l'étape
-            const deleteDiv = document.createElement('div');
-            deleteDiv.classList.add('col-md-2', 'd-flex', 'align-items-end');
-            deleteDiv.innerHTML = `
-                <button type="button" class="btn btn-danger w-100" onclick="removeStep(${stepIndex})">X</button>
-            `;
-
-            // Ajouter les champs et le bouton au conteneur de l'étape
-            stepDiv.appendChild(departDiv);
-            stepDiv.appendChild(arriveDiv);
-            stepDiv.appendChild(deleteDiv);
-
-            // Ajouter l'étape au conteneur principal
-            stepsContainer.appendChild(stepDiv);
-
-            // Incrémenter l'index pour la prochaine étape
-            stepIndex++;
-        });
-
-        function removeStep(index) {
-            const stepToRemove = document.getElementById(`step_${index}`);
-            if (stepToRemove) {
-                stepToRemove.remove();
-            }
-        }
-    </script>
-    <script>
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');
             const file = input.files[0];
@@ -255,7 +141,7 @@
             reader.onloadend = function () {
                 preview.style.backgroundImage = `url(${reader.result})`;
                 preview.innerHTML = '';
-            }
+            };
 
             if (file) {
                 reader.readAsDataURL(file);
@@ -270,37 +156,19 @@
             previewContainer.innerHTML = '';
             const files = input.files;
 
-            const maxFiles = 10;
-            const fileCount = files.length > maxFiles ? maxFiles : files.length;
-
-            for (let i = 0; i < fileCount; i++) {
-                const file = files[i];
+            Array.from(files).forEach(file => {
                 const reader = new FileReader();
 
                 reader.onloadend = function () {
-                    const img = document.createElement('div');
-                    img.classList.add('image-preview');
-                    img.style.backgroundImage = `url(${reader.result})`;
-
-                   
-
-
-                    // Créer un bouton poubelle pour supprimer l'image
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.classList.add('delete-btn');
-                    deleteBtn.innerHTML = '❌';
-                    deleteBtn.onclick = function() {
-                        img.remove();
-                    };
-
-                    img.appendChild(deleteBtn);
+                    const img = document.createElement('img');
+                    img.src = reader.result;
                     previewContainer.appendChild(img);
-                }
+                };
 
                 if (file) {
                     reader.readAsDataURL(file);
                 }
-            }
+            });
         }
     </script>
 {% endblock %}
