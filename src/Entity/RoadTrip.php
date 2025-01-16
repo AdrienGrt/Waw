@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use App\Repository\RoadTripRepository;
@@ -27,8 +28,8 @@ class RoadTrip
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image_supplementaire = null;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $imageSupplementaire = [];
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Assert\NotNull(message: 'La date de départ est obligatoire.')]
@@ -59,21 +60,8 @@ class RoadTrip
     public function __construct()
     {
         $this->checkpoints = new ArrayCollection();
+        $this->imageSupplementaire = [];  // Initialisation du tableau d'images supplémentaires
     }
-
-    public function getDuree(): ?int
-    {
-        if ($this->depart_date && $this->arriver_date) {
-            $interval = $this->depart_date->diff($this->arriver_date);
-            return $interval->days;
-        }
-
-        return null;
-    }
-
-    // Getters et setters (voir contenu initial pour détails)
-
-
 
     public function getId(): ?int
     {
@@ -88,7 +76,6 @@ class RoadTrip
     public function setTitre(string $titre): static
     {
         $this->titre = $titre;
-
         return $this;
     }
 
@@ -100,7 +87,6 @@ class RoadTrip
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -112,19 +98,25 @@ class RoadTrip
     public function setImage(?string $image): static
     {
         $this->image = $image;
-
         return $this;
     }
 
-    public function getImageSupplementaire(): ?string
+    public function getImageSupplementaire(): ?array
     {
-        return $this->image_supplementaire;
+        return $this->imageSupplementaire;
     }
 
-    public function setImageSupplementaire(?string $image_supplementaire): static
+    public function setImageSupplementaire(array $imageSupplementaire): static
     {
-        $this->image_supplementaire = $image_supplementaire;
+        $this->imageSupplementaire = $imageSupplementaire;
+        return $this;
+    }
 
+    public function addImageSupplementaire(string $image): static
+    {
+        if (!in_array($image, $this->imageSupplementaire, true)) {
+            $this->imageSupplementaire[] = $image;
+        }
         return $this;
     }
 
@@ -136,7 +128,6 @@ class RoadTrip
     public function setDepartDate(?\DateTimeInterface $depart_date): static
     {
         $this->depart_date = $depart_date;
-
         return $this;
     }
 
@@ -148,7 +139,6 @@ class RoadTrip
     public function setArriverDate(?\DateTimeInterface $arriver_date): static
     {
         $this->arriver_date = $arriver_date;
-
         return $this;
     }
 
@@ -160,7 +150,6 @@ class RoadTrip
     public function setDepartAddress(?string $depart_address): static
     {
         $this->depart_address = $depart_address;
-
         return $this;
     }
 
@@ -172,7 +161,6 @@ class RoadTrip
     public function setArriveAddress(?string $arrive_address): static
     {
         $this->arrive_address = $arrive_address;
-
         return $this;
     }
 
@@ -184,7 +172,6 @@ class RoadTrip
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -196,13 +183,9 @@ class RoadTrip
     public function setVehicle(?Vehicle $vehicle): static
     {
         $this->vehicle = $vehicle;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Checkpoint>
-     */
     public function getCheckpoints(): Collection
     {
         return $this->checkpoints;
@@ -214,7 +197,6 @@ class RoadTrip
             $this->checkpoints->add($checkpoint);
             $checkpoint->setRoadTrip($this);
         }
-
         return $this;
     }
 
@@ -225,7 +207,6 @@ class RoadTrip
                 $checkpoint->setRoadTrip(null);
             }
         }
-
         return $this;
     }
 
@@ -237,7 +218,6 @@ class RoadTrip
     public function setDescriptionSupplementaire(?string $description_supplementaire): static
     {
         $this->description_supplementaire = $description_supplementaire;
-
         return $this;
     }
 }

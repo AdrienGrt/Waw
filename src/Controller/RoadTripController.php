@@ -1,14 +1,14 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\RoadTrip;
 use App\Form\RoadTripType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/roadtrip')]
 class RoadTripController extends AbstractController
@@ -23,7 +23,35 @@ class RoadTripController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Gérer l'image principale
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = uniqid() . '.' . $imageFile->guessExtension();
+                $imageFile->move($this->getParameter('uploads_directory'), $imageFileName);
+                $roadTrip->setImage($imageFileName);
+            }
+
+            // Gérer les images supplémentaires
+$extraImages = $form->get('image_supplementaire')->getData();
+if ($extraImages) {
+    $filenames = [];
+    foreach ($extraImages as $extraImage) {
+        $extraImageName = uniqid() . '.' . $extraImage->guessExtension();
+        $extraImage->move($this->getParameter('uploads_directory'), $extraImageName);
+        $filenames[] = $extraImageName;
+    }
+    // On s'assure que c'est toujours un tableau (même si vide)
+    $roadTrip->setImageSupplementaire($filenames);
+} else {
+    // Si aucune image supplémentaire n'est ajoutée, on passe un tableau vide
+    $roadTrip->setImageSupplementaire([]);
+}
+
+
+            // Associer l'utilisateur au road trip
             $roadTrip->setUser($this->getUser());
+
+            // Sauvegarder dans la base de données
             $em->persist($roadTrip);
             $em->flush();
 
@@ -82,5 +110,33 @@ class RoadTripController extends AbstractController
         return $this->render('dashboard/roadtrip/view.html.twig', [
             'roadTrip' => $roadTrip,
         ]);
+    }
+
+    #[Route('/{id}/delete', name: 'app_dashboard_roadtrip_delete', methods: ['POST'])]
+    public function deleteRoadTrip(int $id, EntityManagerInterface $em, Request $request): Response
+    {
+        // Récupérer le road trip par son ID
+        $roadTrip = $em->getRepository(RoadTrip::class)->find($id);
+
+        if (!$roadTrip || $roadTrip->getUser() !== $this->getUser()) {
+            // Vérifier si l'utilisateur est bien le propriétaire du roadtrip
+            throw $this->createNotFoundException('Road trip introuvable ou non autorisé.');
+        }
+
+        // Vérifier le token CSRF pour s'assurer que la demande vient bien du formulaire
+        $token = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete' . $roadTrip->getId(), $token)) {
+            throw new \Exception('Token CSRF invalide.');
+        }
+
+        // Supprimer le road trip de la base de données
+        $em->remove($roadTrip);
+        $em->flush();
+
+        // Ajouter un message flash pour indiquer que la suppression a réussi
+        $this->addFlash('success', 'Le road trip a été supprimé avec succès.');
+
+        // Rediriger l'utilisateur vers la liste des roadtrips
+        return $this->redirectToRoute('app_dashboard_roadtrip_list');
     }
 }

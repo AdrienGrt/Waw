@@ -3,6 +3,219 @@
 {% block title %}Mon Carnet{% endblock %}
 
 {% block body %}
-<h1>Bienvenue dans votre Carnet</h1>
-<p>Ajoutez vos expériences de voyage, vos photos et partagez vos moments.</p>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container hero-content text-center">
+            <h1 class="display-4 text-white">Bienvenue dans votre Carnet</h1>
+            <p class="lead text-white">Créez ou retrouvez tous vos Roadtrips ici</p>
+            <!-- Nouveau bouton "Voir" qui fait défiler la page -->
+            <a href="#voyage" class="btn btn-primary btn-lg">Voir Mes Roadtrips</a>
+        </div>
+    </div>
+
+    <!-- Affichage des roadtrips -->
+    <h2 class="text-center">Mes Roadtrips</h2>
+
+    <div id="voyage" class="row justify-content-center">
+        <!-- Encart pour créer un nouveau roadtrip (positionné en première place) -->
+        <div class="col-md-3 mb-4">
+            <div class="card new-roadtrip-card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Créer un Nouveau Roadtrip</h5>
+                    <a href="{{ path('app_dashboard_roadtrip_create') }}" class="btn btn-danger">
+                        <i class="fas fa-plus"></i> Créer
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Si des roadtrips existent, les afficher -->
+        {% if roadTrips is not empty %}
+            <!-- Cartes des roadtrips -->
+            {% for roadTrip in roadTrips %}
+                <div class="col-md-3 mb-4 {% if loop.length == 1 %}d-flex justify-content-start{% endif %}">
+                    <div class="card">
+                        <!-- Vérification de l'image principale -->
+<img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+
+                        <div class="card-body">
+                            <h5 class="card-title">{{ roadTrip.titre }}</h5>
+                            <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ roadTrip.description }}
+                            </p>
+                            <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-primary">Voir le Voyage</a>
+                        </div>
+                    </div>
+
+                    <!-- Si des images supplémentaires existent, les afficher -->
+                    {% if roadTrip.imageSupplementaire is not empty %}
+                        <div class="row mt-2">
+                            {% for image in roadTrip.imageSupplementaire %}
+                                <div class="col-md-4 mb-2">
+                                    <img src="{{ asset('uploads/images/' ~ image) }}" alt="Image supplémentaire" class="img-fluid rounded">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">Aucun roadtrip disponible pour le moment.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Hero Section */
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1473969631237-f466cf342b1f?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            height: 100vh; /* Utilisation de 100vh pour occuper toute la hauteur */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            color: white;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background-color: #DF6951;
+            border-color: #DF6951;
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+        }
+
+        .btn-primary:hover {
+            background-color: #c85a45;
+            border-color: #c85a45;
+        }
+
+        /* Encadré de création de roadtrip */
+        .new-roadtrip-card {
+            border: 2px dashed #DF6951;
+            background-color: #f8f9fa;
+            text-align: center;
+            height: 100%;
+        }
+
+        .new-roadtrip-card .card-body {
+            padding: 3rem;
+        }
+
+        .new-roadtrip-card .btn-danger {
+            background-color: #DF6951;
+            border-color: #DF6951;
+            font-size: 1rem;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            margin-top: 25%;
+        }
+
+        .new-roadtrip-card .btn-danger:hover {
+            background-color: #c85a45;
+            border-color: #c85a45;
+        }
+
+        /* Style pour les cartes de roadtrip */
+        .card {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-img-top {
+            height: 160px;  /* Taille réduite des images */
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 1rem;  /* Réduction de la taille des éléments */
+        }
+
+        .card-title {
+            font-size: 1rem;  /* Taille réduite du titre */
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-top: 5%;
+            margin-bottom: 3%;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        /* Réduction de l'écart entre les cartes et centrage */
+        .row {
+            margin-left: 5% !important;
+            margin-right: 5% !important;
+        }
+
+        .col-md-3 {
+            margin-bottom: 5% !important; /* Espacement de 5% entre les cartes */
+        }
+
+        /* Alignement à gauche si une seule carte dans la ligne */
+        .d-flex.justify-content-start {
+            justify-content: flex-start !important;
+        }
+
+        /* Styles pour les images supplémentaires */
+        .image-gallery img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    </style>
 {% endblock %}

@@ -56,9 +56,10 @@ class RoadTripType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('image_supplementaire', FileType::class, [
-                'label' => 'Image supplémentaire',
+                'label' => 'Images supplémentaires',
                 'required' => false,
                 'mapped' => false,
+                'multiple' => true,
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('vehicle', EntityType::class, [ // Utilisation d'EntityType pour lier avec l'entité Vehicle
