@@ -22,6 +22,11 @@ class JournalController extends AbstractController
     #[Route('/carnet', name: 'app_journal')]
     public function journal(RoadTripRepository $roadTripRepository)
     {
+        // Vérifier si l'utilisateur est connecté
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
 
@@ -37,6 +42,11 @@ class JournalController extends AbstractController
     #[Route('/roadtrip/create', name: 'app_roadtrip_create')]
     public function create(Request $request)
     {
+        // Vérifier si l'utilisateur est connecté
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         // Créer une nouvelle instance de RoadTrip
         $roadTrip = new RoadTrip();
         
@@ -66,6 +76,11 @@ class JournalController extends AbstractController
     #[Route('/roadtrip/{id}', name: 'app_dashboard_roadtrip_view')]
     public function view(RoadTrip $roadTrip)
     {
+        // Vérifier si l'utilisateur est connecté
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         // Vérifier si l'utilisateur connecté est bien le propriétaire du roadtrip
         if ($roadTrip->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Vous ne pouvez pas accéder à ce roadtrip.');
@@ -80,6 +95,11 @@ class JournalController extends AbstractController
     #[Route('/roadtrip/{id}/delete', name: 'app_roadtrip_delete')]
     public function delete(RoadTrip $roadTrip)
     {
+        // Vérifier si l'utilisateur est connecté
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         // Vérifier si l'utilisateur connecté est bien le propriétaire du roadtrip
         if ($roadTrip->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Vous ne pouvez pas supprimer ce roadtrip.');

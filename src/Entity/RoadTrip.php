@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Entity;
 
 use App\Repository\RoadTripRepository;
@@ -10,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RoadTripRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class RoadTrip
 {
     #[ORM\Id]
@@ -56,6 +56,9 @@ class RoadTrip
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description_supplementaire = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $duree = null;
 
     public function __construct()
     {
@@ -219,5 +222,28 @@ class RoadTrip
     {
         $this->description_supplementaire = $description_supplementaire;
         return $this;
+    }
+
+    public function getDuree(): ?int
+    {
+        if ($this->depart_date && $this->arriver_date) {
+            return $this->arriver_date->diff($this->depart_date)->days;
+        }
+        return null;
+    }
+
+    public function setDuree(?int $duree): static
+    {
+        $this->duree = $duree;
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateDuree(): void
+    {
+        if ($this->depart_date && $this->arriver_date) {
+            $this->duree = $this->arriver_date->diff($this->depart_date)->days;
+        }
     }
 }

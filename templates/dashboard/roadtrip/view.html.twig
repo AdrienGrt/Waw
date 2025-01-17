@@ -13,7 +13,7 @@
 
         /* Hero Section */
         .hero-section {
-            background-image: url('{{ asset('uploads/images/' ~ roadTrip.image) }}');
+            background-image: url('https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
             height: 400px; /* Hauteur ajustée pour une meilleure visibilité */
@@ -93,7 +93,8 @@
             color: #DF6951 !important;
         }
         .text-center{
-            margin-top: 20px;
+            margin-top: 140px;
+            margin-bottom: 50px;
         }
         .card-title {
             font-size: 1.5rem;
@@ -171,7 +172,7 @@
     <div class="container mt-4">
         <!-- Profile and Title -->
         <div class="text-center">
-            <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="profile-image">
+            <img src="https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="{{ roadTrip.titre }}" class="profile-image">
            
         </div>
 
@@ -236,27 +237,18 @@
         {% endif %}
 
         <!-- Additional Images -->
-        {% if roadTrip.imageSupplementaire %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="text-primary">Images Supplémentaires</h5>
-                    <div class="row">
-                        {% if roadTrip.imageSupplementaire is iterable %}
-                            {% for image in roadTrip.imageSupplementaire %}
-                                <div class="col-md-4 mb-3">
-                                    <img src="{{ asset('uploads/images/' ~ image) }}" alt="Image supplémentaire" class="img-fluid">
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <!-- Si image_supplementaire est une seule image -->
-                            <div class="col-md-4 mb-3">
-                                <img src="{{ asset('uploads/images/' ~ roadTrip.imageSupplementaire) }}" alt="Image supplémentaire" class="img-fluid">
-                            </div>
-                        {% endif %}
-                    </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-primary">Images Supplémentaires</h5>
+                <div class="row">
+                    {% for i in 1..5 %}
+                        <div class="col-md-4 mb-3">
+                            <img src="https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image supplémentaire" class="img-fluid">
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-        {% endif %}
+        </div>
 
         <!-- Back Button -->
         <div class="text-center back-btn">

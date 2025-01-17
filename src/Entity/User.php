@@ -44,6 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: RoadTrip::class, mappedBy: 'user')]
     private Collection $roadTrips;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $bio = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture = null;
+
     public function __construct()
     {
         $this->roadTrips = new ArrayCollection();
@@ -163,6 +169,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $roadTrip->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): static
+    {
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }
