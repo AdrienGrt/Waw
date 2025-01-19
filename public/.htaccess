@@ -1,0 +1,7 @@
+# Use the following line if you're deploying Symfony on a shared hosting platform
+RewriteEngine On
+
+# Redirect any requests that aren't a valid file or directory to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]

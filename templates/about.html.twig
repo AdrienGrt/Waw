@@ -1,0 +1,257 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+        background-image: url('https://images.unsplash.com/photo-1476900543704-4312b78632f8?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        background-size: cover;
+        background-position: center;
+        padding: 120px 0;
+        color: #fff;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .hero-section p {
+        font-size: 1.25rem;
+        margin-bottom: 30px;
+    }
+
+    .hero-section .btn-primary {
+        background-color: #D66A50;
+        border-color: #D66A50;
+        color: #fff;
+        font-size: 1.2rem;
+        padding: 10px 30px;
+        border-radius: 50px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .hero-section .btn-primary:hover {
+        background-color: #c15a42;
+        color: #fff;
+    }
+
+    /* ABOUT SECTION */
+    .about-section {
+        padding: 80px 0;
+        background-color: #fff;
+    }
+
+    .about-section h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-top: 50px;
+    }
+
+    .about-section .row {
+        display: flex;
+    }
+
+    .about-section .about-text {
+        flex: 1;
+        padding-right: 20px;
+    }
+
+    .about-section .about-image {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -50px;
+    }
+
+    .about-section .about-image img {
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* TEAM SECTION */
+    .team-section {
+        padding: 80px 0;
+        background-color: #f8f9fa;
+    }
+
+    .team-section h2 {
+        margin-bottom: 50px;
+        text-align: center;
+        font-size: 2.5rem;
+    }
+
+    .team-section .team-member {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .team-section img {
+        max-width: 150px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+    }
+
+    /* TESTIMONIALS SECTION */
+    .testimonials-section {
+        padding: 80px 0;
+        background-color: #fff;
+    }
+
+    .testimonials-section h2 {
+        margin-bottom: 50px;
+        text-align: center;
+        font-size: 2.5rem;
+    }
+
+    .testimonial-card {
+        background-color: #f1f1f1;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-card p {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+        background-color: #DF6951;
+        padding: 40px 0;
+        color: #fff;
+        text-align: center;
+    }
+
+    .cta-section .btn-light {
+        background-color: #fff;
+        color: #DF6951;
+        font-size: 1.2rem;
+        border-radius: 50px;
+        padding: 15px 40px;
+        transition: 0.3s;
+    }
+
+    .cta-section .btn-light:hover {
+        background-color: #D05A44;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1>À propos de nous</h1>
+        <p class="lead mb-4">Découvrez notre histoire, notre mission et ce qui nous rend unique.</p>
+        <a href="#about" class="btn btn-primary btn-lg">En savoir plus</a>
+    </div>
+</div>
+
+<!-- About Section -->
+<div id="about" class="about-section">
+    <div class="container">
+        <h2>Notre Histoire</h2>
+        <div class="row">
+            <div class="about-text">
+                <p>
+                    Bienvenue sur notre site de Road Trips ! Nous sommes une équipe passionnée de voyageurs et d'aventuriers qui a créé cette plateforme pour partager avec vous nos meilleurs moments de road trips.
+                    Nous avons parcouru des milliers de kilomètres, exploré des endroits magnifiques, et aujourd'hui nous voulons vous inviter à vivre des expériences inoubliables en partageant nos aventures avec vous. 
+                    Que vous soyez un voyageur solo, une famille ou un groupe d'amis, nous avons des road trips pour tout le monde !
+                </p>
+
+                <h3>Notre Mission</h3>
+                <p>
+                    Notre mission est de vous offrir une expérience de voyage facile et inoubliable. Nous croyons que chaque voyage est une opportunité d'explorer de nouveaux horizons, de se reconnecter avec soi-même et de créer des souvenirs durables.
+                </p>
+            </div>
+
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1504217051514-96afa06398be?q=80&w=3388&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Notre histoire">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Section -->
+<div id="team" class="team-section">
+    <div class="container">
+        <h2 class="text-center">Rencontrez notre équipe</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Membre de l'équipe" class="img-fluid">
+                    <h4>Jean Dupont</h4>
+                    <p>Fondateur</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/11.jpg" alt="Membre de l'équipe" class="img-fluid">
+                    <h4>Marie Martin</h4>
+                    <p>Responsable des partenariats</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Membre de l'équipe" class="img-fluid">
+                    <h4>Paul Lefevre</h4>
+                    <p>Développeur</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="testimonials-section">
+    <div class="container">
+        <h2 class="text-center">Ce Que Nos Utilisateurs Disent</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p>"C'était l'expérience de voyage la plus incroyable que j'ai vécue. Merci à toute l'équipe de WaW !" - <strong>Mike Taylor</strong></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p>"Le site est super facile à utiliser et a rendu la planification de notre road trip tellement plus amusante !" - <strong>Chris Thomas</strong></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p>"Je recommande vivement ce site à tous les amateurs de road trips, une vraie pépite !" - <strong>Alice Dupont</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action Section -->
+<div class="cta-section">
+    <div class="container">
+        <h2 class="mb-4">Prêt à commencer votre aventure ?</h2>
+        <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">Rejoindre la communauté</a>
+    </div>
+</div>
+{% endblock %}

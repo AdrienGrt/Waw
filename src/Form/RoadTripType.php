@@ -4,12 +4,12 @@ namespace App\Form;
 
 use App\Entity\RoadTrip;
 use App\Entity\Vehicle;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType; // Import correct
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -56,14 +56,15 @@ class RoadTripType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('image_supplementaire', FileType::class, [
-                'label' => 'Image supplémentaire',
+                'label' => 'Images supplémentaires',
                 'required' => false,
                 'mapped' => false,
+                'multiple' => true,
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('vehicle', EntityType::class, [ // Utilisation de EntityType ici
+            ->add('vehicle', EntityType::class, [ // Utilisation d'EntityType pour lier avec l'entité Vehicle
                 'class' => Vehicle::class,
-                'choice_label' => 'type',
+                'choice_label' => 'type', // Utilise la colonne "type" comme label pour le menu déroulant
                 'placeholder' => 'Choisissez un véhicule',
                 'label' => 'Véhicule',
                 'attr' => ['class' => 'form-select'],
@@ -73,7 +74,7 @@ class RoadTripType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => RoadTrip::class,
+            'data_class' => RoadTrip::class, // L'entité associée à ce formulaire
         ]);
     }
 }

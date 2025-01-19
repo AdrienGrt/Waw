@@ -6,60 +6,139 @@
     {{ parent() }}
     <style>
         body {
-            background-color: #f0f2f5;
+            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
         }
-        .cover-image {
-            height: 300px;
+
+        /* Hero Section */
+        .hero-section {
+            background-image: url('https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            margin-top: -15px;
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
         }
-        .card {
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            
         }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
         .btn-primary {
             background-color: #DF6951;
-            
             border-color: #DF6951;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: background-color 0.3s;
         }
+
         .btn-primary:hover {
             background-color: #c85a44;
             border-color: #c85a44;
         }
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            margin-top: -100px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+    .text-center{
+        margin-top: 10%;
+        margin-bottom: 5%;
+    }
         .text-primary {
             color: #DF6951 !important;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 350px;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
+                margin-top: -80px;
+            }
+
+            .btn-primary {
+                padding: 8px 20px;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <!-- Header Image -->
-    <div class="cover-image" style="background-image: url('{{ asset('uploads/images/' ~ roadTrip.image) }}');"></div>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>{{ roadTrip.titre }}</h1>
+            <p class="lead">Découvrez ce roadtrip exceptionnel !</p>
+            <a href="#voyage" class="btn btn-primary btn-lg">Voir les détails</a>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <div class="container mt-4">
-        <!-- Profile and Title -->
         <div class="text-center">
-            <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="profile-image">
-            <h1 class="mt-3">{{ roadTrip.titre }}</h1>
+            <img src="https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="{{ roadTrip.titre }}" class="profile-image">
         </div>
 
-        <!-- Road Trip Details -->
-        <div class="card mt-4">
+        <div class="card">
             <div class="card-body">
                 <h5 class="text-primary">Description</h5>
-                <p>{{ roadTrip.description }}</p>
+                <p class="card-text">{{ roadTrip.description }}</p>
                 <hr>
-
-                <!-- Details Section -->
                 <div class="row">
                     <div class="col-md-6">
                         <h6 class="text-primary">Véhicule</h6>
@@ -77,8 +156,6 @@
                     </div>
                 </div>
                 <hr>
-
-                <!-- Date Section -->
                 <div class="row">
                     <div class="col-md-6">
                         <h6 class="text-primary">Date de départ</h6>
@@ -90,8 +167,6 @@
                     </div>
                 </div>
                 <hr>
-
-                <!-- Address Section -->
                 <div>
                     <h6 class="text-primary">Adresse de départ</h6>
                     <p>{{ roadTrip.departAddress }}</p>
@@ -101,42 +176,31 @@
             </div>
         </div>
 
-        <!-- Additional Description -->
         {% if roadTrip.descriptionSupplementaire %}
-            <div class="card mt-4">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="text-primary">Description Supplémentaire</h5>
-                    <p>{{ roadTrip.descriptionSupplementaire }}</p>
+                    <p class="card-text">{{ roadTrip.descriptionSupplementaire }}</p>
                 </div>
             </div>
         {% endif %}
 
-        <!-- Additional Images -->
-        {% if roadTrip.imageSupplementaire %}
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="text-primary">Images Supplémentaires</h5>
-                    <div class="row">
-                        {% if roadTrip.imageSupplementaire is iterable %}
-                            {% for image in roadTrip.imageSupplementaire %}
-                                <div class="col-md-4 mb-3">
-                                    <img src="{{ asset('uploads/images/' ~ image) }}" alt="Image supplémentaire" class="img-fluid rounded">
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <!-- Si image_supplementaire est une seule image -->
-                            <div class="col-md-4 mb-3">
-                                <img src="{{ asset('uploads/images/' ~ roadTrip.imageSupplementaire) }}" alt="Image supplémentaire" class="img-fluid rounded">
-                            </div>
-                        {% endif %}
-                    </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-primary">Images Supplémentaires</h5>
+                <div class="row">
+                    {% for i in 1..5 %}
+                        <div class="col-md-4 mb-3">
+                            <img src="https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image supplémentaire" class="img-fluid">
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-        {% endif %}
+        </div>
 
         <!-- Back Button -->
-        <div class="text-center mt-4">
-            <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-primary">Retour à la liste</a>
+        <div class="text-center back-btn">
+            <a href="{{ referer }}" class="btn btn-primary">Retour</a>
         </div>
     </div>
 {% endblock %}

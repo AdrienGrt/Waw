@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,68 +17,155 @@
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
 
     {% block stylesheets %}
-        <!-- Inclusions supplémentaires de styles peuvent aller ici -->
+        <style>
+            /* Global Styles */
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Poppins', sans-serif;
+                overflow-x: hidden;
+            }
+
+            /* Hero Section */
+            .hero-section {
+                background-image: url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&auto=format&fit=crop&q=60&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFuZHNjYXBlfGVufDB8fDB8fHww');
+                background-size: cover;
+                background-position: center;
+                position: relative;
+                padding: 120px 0;
+                color: #fff;
+                text-align: center;
+                overflow: hidden;
+            }
+
+            /* Navbar */
+            .navbar {
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                background-color: #000;
+            }
+
+            .navbar.sticky {
+                background-color: #DF6951;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar-nav .nav-link {
+                color: white !important;
+            }
+
+            /* Boutons réduits */
+            .navbar-nav .btn {
+                margin-left: 10px;
+                border-radius: 50px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .navbar-nav .btn-outline-light {
+                color: white;
+                border-color: white;
+            }
+
+            .navbar-nav .btn-outline-light:hover {
+                background-color: white;
+                color: #DF6951;
+            }
+
+            /* Bouton S'inscrire */
+            .navbar-nav .btn-warning {
+                background-color: #DF6951;
+                color: white;
+                border: none;
+            }
+
+            .navbar-nav .btn-warning:hover {
+                background-color: #c85a44;
+            }
+
+            /* Menu mobile toujours blanc */
+            .navbar-toggler {
+                border: none;
+            }
+
+            .navbar-toggler-icon {
+                background-color: white;
+            }
+            .navbar-brand {
+    color: white !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+
+            @media (max-width: 768px) {
+                .navbar {
+                    background-color: #fff !important;
+                }
+
+                .navbar-nav .nav-link {
+                    color: #000 !important;
+                }
+            }
+        </style>
     {% endblock %}
 </head>
 <body>
+    {% block nav %}
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="{{ path('app_home') }}">WaW</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_about') }}">A Propos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_voyage') }}">Voyages</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_journal') }}">Carnet</a>
+            </li>
+            {% if app.user %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_profile') }}">Profil</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="btn btn-outline-light" href="{{ path('app_login') }}">Se Connecter</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-warning" href="{{ path('app_register') }}">S'inscrire</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% endblock %}
+
     {% block body %}
         <!-- Contenu principal de la page -->
     {% endblock %}
 
-    <!-- JavaScript -->
     {% block javascripts %}
-        
         <script>
-            function initAutocomplete() {
-                var departAddressInput = document.getElementById('address_depart');
-                var arriveAddressInput = document.getElementById('address_arrive');
+          window.onscroll = function() {toggleStickyNavbar()};
 
-                var options = {
-                    types: ['address'],
-                    componentRestrictions: { country: 'FR' },  // Optionnel : restreindre à un pays spécifique
-                    fields: ['place_id', 'geometry', 'name']
-                };
-
-                var autocompleteDepart = new google.maps.places.Autocomplete(departAddressInput, options);
-                var autocompleteArrive = new google.maps.places.Autocomplete(arriveAddressInput, options);
-
-                autocompleteDepart.addListener('place_changed', function() {
-                    var place = autocompleteDepart.getPlace();
-                    // Vous pouvez manipuler le lieu ici si nécessaire
-                });
-
-                autocompleteArrive.addListener('place_changed', function() {
-                    var place = autocompleteArrive.getPlace();
-                    // Vous pouvez manipuler le lieu ici si nécessaire
-                });
+          function toggleStickyNavbar() {
+            let navbar = document.getElementById("navbar");
+            if (window.pageYOffset > 50) {
+              navbar.classList.add("sticky");
+            } else {
+              navbar.classList.remove("sticky");
             }
+          }
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMWOHqwyyuaA6tjdT3BC47LcKaa-rvbaY&libraries=places&callback=initAutocomplete" async defer></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
-                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zybcJfX4GdIY6cfF/JR8g2V8h9p3p7b25eb5dR65" 
-                crossorigin="anonymous"></script>
-
-        <!-- Popper.js -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js" 
-                integrity="sha384-QnZz3L3QpBQd8i0r1w5/M5cr3EaaYTyzmLFmRaDGiEsXkQxoStcZtdJHT1T5K0GZ" 
-                crossorigin="anonymous"></script>
-
-        <!-- Bootstrap JS -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
-                integrity="sha384-pzjw8f+ua7Kw1TIq0x3+v5c3dONpLqL7F4gTx1s5ZxwFhF5J7B3Q/mJdk74gbkvi" 
-                crossorigin="anonymous"></script>
-
-        <!-- Test JavaScript -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                console.log('Le JavaScript fonctionne bien !');
-                // Exemple : change la couleur de fond du body
-                document.body.style.backgroundColor = '#f8f9fa';
-            });
-        </script>
     {% endblock %}
 </body>
 </html>
