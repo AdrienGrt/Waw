@@ -10,9 +10,9 @@
         font-family: 'Poppins', sans-serif;
     }
 
-    /* HERO SECTION - Style modernisé sans voile noir */
+    /* HERO SECTION */
     .hero-section {
-        background-image: url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bGFuZHNjYXBlfGVufDB8fDB8fHww');
+        background-image: url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=2675&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
         background-size: cover;
         background-position: center;
         position: relative;
@@ -22,12 +22,27 @@
         overflow: hidden;
     }
 
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Superposition sombre */
+        z-index: 1;
+    }
+
+    .hero-text {
+        position: relative;
+        z-index: 2; /* Pour être au-dessus de la superposition sombre */
+    }
+
     .hero-text h1 {
         font-size: 4rem;
         font-weight: 700;
         margin-bottom: 20px;
         animation: fadeInUp 1.5s ease-out;
-        z-index: 1;
     }
 
     .hero-text p {
@@ -35,7 +50,6 @@
         margin-bottom: 30px;
         animation: fadeInUp 2s ease-out;
         animation-delay: 0.5s;
-        z-index: 1;
     }
 
     .btn-primary {
@@ -46,7 +60,6 @@
         border-radius: 50px;
         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         transition: 0.3s ease;
-        z-index: 1;
     }
 
     .btn-primary:hover {
@@ -55,24 +68,8 @@
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
 
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
+    .text-primary {
+        color: #D66A50 !important;
     }
 
     /* Road Trip Section */
@@ -83,36 +80,44 @@
 
     .card {
         border: none;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        border-radius: 8px;
-        opacity: 0;
-        animation: fadeInUp 1s ease-out forwards;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        border-radius: 15px;
+        overflow: hidden;
     }
 
     .card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-10px);
     }
 
-    .card img {
+    .card-img-top {
         height: 200px;
         object-fit: cover;
-        border-radius: 4px 4px 0 0;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
     }
 
     .btn-view {
-        margin-top: 10px;
-        background-color: #4299e1;
+        background-color: #D66A50;
         color: white;
         border: none;
+        width: 100%;
         padding: 10px 15px;
         text-align: center;
-        border-radius: 4px;
-        display: inline-block;
+        border-radius: 50px;
+        transition: background-color 0.3s ease;
     }
 
     .btn-view:hover {
-        background-color: #2b6cb0;
+        background-color: #c15a42;
         color: #fff;
     }
 
@@ -140,8 +145,8 @@
         justify-content: center;
         margin-right: 20px;
         font-size: 24px;
-        opacity: 0;
-        animation: fadeIn 1s ease-out forwards;
+        background-color: #D66A50;
+        color: white;
     }
 
     .cta-section {
@@ -150,17 +155,6 @@
         color: #fff;
         text-align: center;
     }
-
-    /* Delay animation for multiple icons in features */
-    .features-section .icon-box:nth-child(1) {
-        animation-delay: 0.5s;
-    }
-    .features-section .icon-box:nth-child(2) {
-        animation-delay: 1s;
-    }
-    .features-section .icon-box:nth-child(3) {
-        animation-delay: 1.5s;
-    }
 </style>
 {% endblock %}
 
@@ -168,7 +162,7 @@
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="container hero-text">
-        <h1>Partagez vos <span class="text-primary" style="color: #F2A900;">expériences</span> inoubliables</h1>
+        <h1>Partagez vos <span class="text-primary">expériences</span> inoubliables</h1>
         <p class="lead mb-4">Explorez, Partagez, Vivez vos rêves sur la route. Rejoignez la communauté de passionnés et découvrez des road trips exceptionnels.</p>
         <a href="#" class="btn btn-primary btn-lg">Commencez l'aventure</a>
     </div>
@@ -182,16 +176,11 @@
             {% for roadTrip in roadTrips %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <!-- Image du Road Trip -->
                         <img src="{{ roadTrip.image ? asset('uploads/' ~ roadTrip.image) : asset('uploads/pt.jpg') }}" alt="{{ roadTrip.titre }}" class="card-img-top">
-
                         <div class="card-body">
-                            <!-- Titre et détails -->
                             <h5 class="card-title">{{ roadTrip.titre }}</h5>
                             <p class="card-text">Durée : {{ roadTrip.getDuree() ?? 'Non spécifiée' }} jours</p>
                             <p class="card-text">Véhicule : {{ roadTrip.vehicle.type ?? 'Non spécifié' }}</p>
-
-                            <!-- Bouton Voir le Road Trip -->
                             <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-view">Voir le Road Trip</a>
                         </div>
                     </div>
@@ -210,7 +199,7 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <div class="d-flex mb-5">
-                    <div class="icon-box" style="background-color: #D66A50; color: white;">
+                    <div class="icon-box">
                         <i class="fas fa-user-plus"></i>
                     </div>
                     <div>
@@ -219,7 +208,7 @@
                     </div>
                 </div>
                 <div class="d-flex mb-5">
-                    <div class="icon-box" style="background-color: #D66A50; color: white;">
+                    <div class="icon-box">
                         <i class="fas fa-book"></i>
                     </div>
                     <div>
@@ -228,7 +217,7 @@
                     </div>
                 </div>
                 <div class="d-flex">
-                    <div class="icon-box" style="background-color: #D66A50; color: white;">
+                    <div class="icon-box">
                         <i class="fas fa-share-alt"></i>
                     </div>
                     <div>
@@ -237,8 +226,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Road Trip Dynamique - Premier RoadTrip -->
             <div class="col-md-6">
                 {% if roadTrips is not empty %}
                     <div class="card">
@@ -256,7 +243,7 @@
     </div>
 </div>
 
-<!-- Call to Action Section (sans animation) -->
+<!-- Call to Action Section -->
 <div class="cta-section">
     <div class="container">
         <h2 class="mb-4">Prêt à commencer votre aventure ?</h2>

@@ -36,14 +36,17 @@
                 <div class="col-md-3 mb-4 {% if loop.length == 1 %}d-flex justify-content-start{% endif %}">
                     <div class="card">
                         <!-- Vérification de l'image principale -->
-<img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+                        <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="card-img-top">
 
                         <div class="card-body">
                             <h5 class="card-title">{{ roadTrip.titre }}</h5>
                             <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 {{ roadTrip.description }}
                             </p>
-                            <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-primary">Voir le Voyage</a>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-primary">Voir</a>
+                                <a href="{{ path('app_dashboard_roadtrip_edit', { id: roadTrip.id }) }}" class="btn btn-secondary">Modifier</a>
+                            </div>
                         </div>
                     </div>
 
@@ -70,10 +73,10 @@
     <style>
         /* Hero Section */
         .hero-section {
-            background-image: url('https://images.unsplash.com/photo-1473969631237-f466cf342b1f?q=80&w=3474&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-image: url('https://images.unsplash.com/photo-1494783367193-149034c05e8f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
             background-position: center;
-            height: 100vh; /* Utilisation de 100vh pour occuper toute la hauteur */
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,7 +125,20 @@
             border-color: #c85a45;
         }
 
-        /* Encadré de création de roadtrip */
+        .btn-secondary {
+            background-color: #444;
+            border-color: #444;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+            border-radius: 50px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #222;
+            border-color: #222;
+        }
+
         .new-roadtrip-card {
             border: 2px dashed #DF6951;
             background-color: #f8f9fa;
@@ -148,7 +164,6 @@
             border-color: #c85a45;
         }
 
-        /* Style pour les cartes de roadtrip */
         .card {
             border: none;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -163,16 +178,16 @@
         }
 
         .card-img-top {
-            height: 160px;  /* Taille réduite des images */
+            height: 160px;
             object-fit: cover;
         }
 
         .card-body {
-            padding: 1rem;  /* Réduction de la taille des éléments */
+            padding: 1rem;
         }
 
         .card-title {
-            font-size: 1rem;  /* Taille réduite du titre */
+            font-size: 1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
@@ -195,27 +210,18 @@
             font-weight: 600;
         }
 
-        /* Réduction de l'écart entre les cartes et centrage */
         .row {
             margin-left: 5% !important;
             margin-right: 5% !important;
         }
 
         .col-md-3 {
-            margin-bottom: 5% !important; /* Espacement de 5% entre les cartes */
+            margin-bottom: 5% !important;
         }
 
-        /* Alignement à gauche si une seule carte dans la ligne */
-        .d-flex.justify-content-start {
-            justify-content: flex-start !important;
-        }
-
-        /* Styles pour les images supplémentaires */
-        .image-gallery img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
+        .d-flex.justify-content-between a {
+            flex: 1;
+            margin: 0 5px;
         }
     </style>
 {% endblock %}

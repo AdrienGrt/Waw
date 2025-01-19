@@ -81,6 +81,9 @@
         transition: transform 0.3s ease;
         border-radius: 15px;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Uniformise la hauteur */
     }
 
     .card:hover {
@@ -93,6 +96,10 @@
     }
 
     .card-body {
+        flex-grow: 1; /* Remplit l'espace restant */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         padding: 1.5rem;
     }
 
@@ -103,7 +110,7 @@
     }
 
     .btn-view {
-        background-color: #4299e1;
+        background-color: #DF6951;
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -112,7 +119,7 @@
     }
 
     .btn-view:hover {
-        background-color: #2b6cb0;
+        background-color: #c85a45;
     }
 
     .cta-section {
@@ -185,8 +192,8 @@
         <h2>Nos Voyages</h2>
         <div class="row">
             {% for roadTrip in roadTrips %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
+                <div class="col-md-4 mb-4 d-flex">
+                    <div class="card w-100">
                         <img src="{{ roadTrip.image ? asset('uploads/' ~ roadTrip.image) : asset('uploads/pt.jpg') }}" alt="{{ roadTrip.titre }}" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ roadTrip.titre }}</h5>
@@ -201,9 +208,6 @@
         </div>
     </div>
 </div>
-
-<!-- CALL TO ACTION SECTION -->
-
 
 <!-- FOOTER SECTION -->
 <div class="footer">

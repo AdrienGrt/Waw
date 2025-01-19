@@ -12,98 +12,77 @@
 
     /* HERO SECTION */
     .hero-section {
-        background-image: url('https://images.unsplash.com/photo-1521747116042-5a810fda9664?w=800&auto=format&fit=crop&q=60&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Ymx1ZSUyMGRhdmlkY3xlbnwwfDB8fHww');
+        background-image: url('https://images.unsplash.com/photo-1476900543704-4312b78632f8?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
         background-size: cover;
         background-position: center;
         padding: 120px 0;
         color: #fff;
         text-align: center;
-        overflow: hidden;
     }
 
     .hero-section h1 {
         font-size: 4rem;
         font-weight: 700;
         margin-bottom: 20px;
-        animation: fadeInUp 1.5s ease-out;
     }
 
     .hero-section p {
         font-size: 1.25rem;
         margin-bottom: 30px;
-        animation: fadeInUp 2s ease-out;
-        animation-delay: 0.5s;
     }
 
-    .btn-primary {
-        background-color: #DF6951;
-        border-color: #DF6951;
-        padding: 12px 30px;
+    .hero-section .btn-primary {
+        background-color: #D66A50;
+        border-color: #D66A50;
+        color: #fff;
         font-size: 1.2rem;
+        padding: 10px 30px;
         border-radius: 50px;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-        transition: 0.3s ease;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .btn-primary:hover {
-        background-color: #D05A44;
-        border-color: #D05A44;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    .hero-section .btn-primary:hover {
+        background-color: #c15a42;
+        color: #fff;
     }
 
     /* ABOUT SECTION */
     .about-section {
         padding: 80px 0;
         background-color: #fff;
-        animation: fadeInUp 1s ease-out;
     }
 
     .about-section h2 {
         font-size: 2.5rem;
         font-weight: 600;
         color: #2c3e50;
-        text-align: left;
-        margin-bottom: 40px;
+        margin-top: 50px;
     }
 
-    .about-section p {
-        font-size: 1.2rem;
-        color: #7f8c8d;
-        line-height: 1.8;
-        margin-top: 20px;
-        text-align: left;
-    }
-
-    .about-section .container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 40px;
-        border-radius: 8px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Flex Layout for "Our Story" */
     .about-section .row {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 
     .about-section .about-text {
         flex: 1;
-        padding-right: 30px;
+        padding-right: 20px;
     }
 
     .about-section .about-image {
         flex: 1;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 5px solid #f8f9fa;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -50px;
     }
 
     .about-section .about-image img {
         width: 100%;
-        height: auto;
+        max-width: 400px;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     /* TEAM SECTION */
@@ -111,9 +90,13 @@
         padding: 80px 0;
         background-color: #f8f9fa;
     }
+
     .team-section h2 {
         margin-bottom: 50px;
+        text-align: center;
+        font-size: 2.5rem;
     }
+
     .team-section .team-member {
         text-align: center;
         margin-bottom: 30px;
@@ -130,13 +113,17 @@
         padding: 80px 0;
         background-color: #fff;
     }
+
     .testimonials-section h2 {
         margin-bottom: 50px;
+        text-align: center;
+        font-size: 2.5rem;
     }
+
     .testimonial-card {
         background-color: #f1f1f1;
         padding: 30px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         text-align: center;
         margin-bottom: 20px;
@@ -145,20 +132,6 @@
     .testimonial-card p {
         font-size: 1.2rem;
         color: #7f8c8d;
-    }
-
-    /* VIDEO SECTION */
-    .video-section {
-        padding: 80px 0;
-        background-color: #f1f1f1;
-        text-align: center;
-    }
-
-    .video-section iframe {
-        width: 70%;
-        margin-top: 30px;
-        height: 500px;
-        border-radius: 8px;
     }
 
     /* CTA SECTION */
@@ -181,18 +154,6 @@
     .cta-section .btn-light:hover {
         background-color: #D05A44;
         color: white;
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
     }
 </style>
 {% endblock %}
@@ -226,7 +187,7 @@
             </div>
 
             <div class="about-image">
-                <img src="https://via.placeholder.com/800x600" alt="Test Image">
+                <img src="https://images.unsplash.com/photo-1504217051514-96afa06398be?q=80&w=3388&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Notre histoire">
             </div>
         </div>
     </div>
@@ -286,18 +247,6 @@
     </div>
 </div>
 
-<!-- Video Section -->
-<div id="video" class="video-section">
-    <div class="container">
-        <h2 class="text-center mb-4">Regardez notre vidéo de présentation</h2>
-        <div class="row">
-            <div class="col-md-12 text-center">
-<iframe src="https://www.youtube.com/watch?v=G1hKzCkywM8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Call to Action Section -->
 <div class="cta-section">
     <div class="container">
@@ -305,5 +254,4 @@
         <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">Rejoindre la communauté</a>
     </div>
 </div>
-
 {% endblock %}
