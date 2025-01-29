@@ -6,10 +6,9 @@
     {{ parent() }}
     <style>
         body {
-            background-image: url('https://images.unsplash.com/photo-1534756287545-6b3a471d4e0e?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-image: url('https://images.unsplash.com/photo-1534756287545-6b3a471d4e0e?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fA%3D%3D');
             background-size: cover;
             background-position: center;
-            background-filter: blur(5px);
         }
 
         .form-container {
@@ -28,32 +27,16 @@
 
         .btn-primary:hover {
             background-color: #c85a44;
-            border-color: #c85a44;
-        }
-
-        .form-control:focus {
-            border-color: #DF6951;
-            box-shadow: 0 0 0 0.2rem rgba(223, 105, 81, 0.25);
-        }
-
-        .text-primary {
-            color: #DF6951 !important;
         }
 
         .image-preview {
             width: 120px;
             height: 120px;
-            border-radius: 50%;
             background-size: cover;
             background-position: center;
             margin: 10px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 40px;
-            color: #DF6951;
-            background-color: #f8f9fa;
             border: 2px dashed #DF6951;
+            border-radius: 10px;
         }
 
         .image-gallery {
@@ -68,83 +51,77 @@
             object-fit: cover;
             border-radius: 10px;
         }
-
-        .form-label {
-            font-weight: 600;
-        }
-
-        .form-control, .form-select {
-            margin-bottom: 1rem;
-        }
-
-        .row {
-            margin-bottom: 1rem;
-        }
-
     </style>
 {% endblock %}
 
 {% block body %}
-    <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100">
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
         <div class="form-container">
-            <h2 class="fw-bold mb-4 text-primary text-center">Créer un Road Trip</h2>
+            <h2 class="text-primary text-center mb-4">Créer un Road Trip</h2>
 
-            {{ form_start(form, { 'enctype': 'multipart/form-data' }) }}
+            {% if form_errors(form) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            {{ form_start(form, {'enctype': 'multipart/form-data'}) }}
 
             <div class="mb-3">
                 {{ form_label(form.titre, 'Nom du Road Trip', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.titre) }}
             </div>
 
             <div class="mb-3">
                 {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3">
                     {{ form_label(form.depart_address, 'Adresse de Départ', {'label_attr': {'class': 'form-label'}}) }}
                     {{ form_widget(form.depart_address, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.depart_address) }}
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mb-3">
                     {{ form_label(form.arrive_address, 'Adresse d\'Arrivée', {'label_attr': {'class': 'form-label'}}) }}
                     {{ form_widget(form.arrive_address, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.arrive_address) }}
                 </div>
             </div>
 
             <div class="mb-3">
                 {{ form_label(form.depart_date, 'Date de Départ', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.depart_date, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.depart_date) }}
             </div>
 
             <div class="mb-3">
                 {{ form_label(form.arriver_date, 'Date d\'Arrivée', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.arriver_date, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.arriver_date) }}
             </div>
 
-            <div class="mb-3">
-                {{ form_label(form.image, 'Image Principale', {'label_attr': {'class': 'form-label'}}) }}
-                <div class="image-preview" id="imagePreview">📷</div>
-                {{ form_widget(form.image, {'attr': {'class': 'form-control', 'onchange': 'previewImage(this);'}}) }}
+            <div id="media-collection" data-prototype="{{ form_widget(form.medias.vars.prototype)|e }}">
+                {% for mediaForm in form.medias %}
+                    <div class="media-item">
+                        {{ form_widget(mediaForm.file) }}
+                        <button type="button" class="btn-remove-media btn btn-danger">Supprimer</button>
+                    </div>
+                {% endfor %}
             </div>
 
-            <div class="mb-3">
-                {{ form_label(form.description_supplementaire, 'Description Supplémentaire', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.description_supplementaire, {'attr': {'class': 'form-control'}}) }}
-            </div>
-
-            <div class="mb-3">
-                {{ form_label(form.image_supplementaire, 'Photos Supplémentaires', {'label_attr': {'class': 'form-label'}}) }}
-                <div class="image-gallery" id="imageGallery"></div>
-                {{ form_widget(form.image_supplementaire, {'attr': {'class': 'form-control', 'multiple': true, 'onchange': 'previewExtraImages(this);'}}) }}
-            </div>
+            <button type="button" id="add-media" class="btn btn-primary mt-3">Ajouter une image</button>
 
             <div class="mb-3">
                 {{ form_label(form.vehicle, 'Choix du Véhicule', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.vehicle) }}
             </div>
 
-            <div class="d-flex justify-content-between mt-4">
+            <div class="d-flex justify-content-between">
                 <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-secondary">Retour</a>
                 <button type="submit" class="btn btn-primary">Publier</button>
             </div>
@@ -156,43 +133,39 @@
 
 {% block javascripts %}
     {{ parent() }}
+    
     <script>
-        function previewImage(input) {
-            const preview = document.getElementById('imagePreview');
-            const file = input.files[0];
-            const reader = new FileReader();
+document.addEventListener("DOMContentLoaded", function() {
+    var mediaCollection = document.getElementById("media-collection");
+    var addButton = document.getElementById("add-media");
 
-            reader.onloadend = function () {
-                preview.style.backgroundImage = `url(${reader.result})`;
-                preview.innerHTML = '';
-            };
+    if (!addButton || !mediaCollection) return;
 
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                preview.style.backgroundImage = '';
-                preview.innerHTML = '📷';
-            }
+    var index = mediaCollection.children.length;
+
+    addButton.addEventListener("click", function() {
+        var prototype = mediaCollection.dataset.prototype;
+        var newForm = prototype.replace(/__name__/g, index);
+        index++;
+
+        var newFormElement = document.createElement("div");
+        newFormElement.className = "media-item";
+        newFormElement.innerHTML = newForm;
+
+        var removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.innerText = "Supprimer";
+        removeButton.className = "btn-remove-media btn btn-danger";
+        newFormElement.appendChild(removeButton);
+
+        mediaCollection.appendChild(newFormElement);
+    });
+
+    mediaCollection.addEventListener("click", function(e) {
+        if (e.target && e.target.classList.contains("btn-remove-media")) {
+            e.target.closest(".media-item").remove();
         }
-
-        function previewExtraImages(input) {
-            const previewContainer = document.getElementById('imageGallery');
-            previewContainer.innerHTML = '';
-            const files = input.files;
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-
-                reader.onloadend = function () {
-                    const img = document.createElement('img');
-                    img.src = reader.result;
-                    previewContainer.appendChild(img);
-                };
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-    </script>
+    });
+});
+</script>
 {% endblock %}

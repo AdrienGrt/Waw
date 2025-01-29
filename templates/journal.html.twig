@@ -8,16 +8,15 @@
         <div class="container hero-content text-center">
             <h1 class="display-4 text-white">Bienvenue dans votre Carnet</h1>
             <p class="lead text-white">Créez ou retrouvez tous vos Roadtrips ici</p>
-            <!-- Nouveau bouton "Voir" qui fait défiler la page -->
             <a href="#voyage" class="btn btn-primary btn-lg">Voir Mes Roadtrips</a>
         </div>
     </div>
 
     <!-- Affichage des roadtrips -->
-    <h2 class="text-center">Mes Roadtrips</h2>
+    <h2 class="text-center mt-5">Mes Roadtrips</h2>
 
-    <div id="voyage" class="row justify-content-center">
-        <!-- Encart pour créer un nouveau roadtrip (positionné en première place) -->
+    <div id="voyage" class="row justify-content-center mt-4">
+        <!-- Encart pour créer un nouveau roadtrip -->
         <div class="col-md-3 mb-4">
             <div class="card new-roadtrip-card">
                 <div class="card-body text-center">
@@ -29,14 +28,17 @@
             </div>
         </div>
 
-        <!-- Si des roadtrips existent, les afficher -->
+        <!-- Affichage des roadtrips existants -->
         {% if roadTrips is not empty %}
-            <!-- Cartes des roadtrips -->
             {% for roadTrip in roadTrips %}
-                <div class="col-md-3 mb-4 {% if loop.length == 1 %}d-flex justify-content-start{% endif %}">
+                <div class="col-md-3 mb-4">
                     <div class="card">
-                        <!-- Vérification de l'image principale -->
-                        <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+                        <!-- Vérification et affichage de l'image principale -->
+                        {% if roadTrip.image %}
+                            <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+                        {% else %}
+                            <img src="{{ asset('uploads/images/default.jpg') }}" alt="Image par défaut" class="card-img-top">
+                        {% endif %}
 
                         <div class="card-body">
                             <h5 class="card-title">{{ roadTrip.titre }}</h5>
@@ -48,18 +50,18 @@
                                 <a href="{{ path('app_dashboard_roadtrip_edit', { id: roadTrip.id }) }}" class="btn btn-secondary">Modifier</a>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Si des images supplémentaires existent, les afficher -->
-                    {% if roadTrip.imageSupplementaire is not empty %}
-                        <div class="row mt-2">
-                            {% for image in roadTrip.imageSupplementaire %}
-                                <div class="col-md-4 mb-2">
-                                    <img src="{{ asset('uploads/images/' ~ image) }}" alt="Image supplémentaire" class="img-fluid rounded">
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                        <!-- Affichage des images supplémentaires -->
+                        {% if roadTrip.medias is not empty %}
+                            <div class="row mt-2 px-2">
+                                {% for media in roadTrip.medias %}
+                                    <div class="col-md-4 mb-2 px-1">
+                                        <img src="{{ asset('uploads/images/' ~ media.fileName) }}" alt="Image supplémentaire" class="img-fluid rounded">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         {% else %}
@@ -71,7 +73,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
-        /* Hero Section */
         .hero-section {
             background-image: url('https://images.unsplash.com/photo-1494783367193-149034c05e8f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-size: cover;
@@ -97,52 +98,34 @@
         .hero-content {
             position: relative;
             z-index: 1;
-            color: #fff;
             text-align: center;
         }
 
         .hero-content h1 {
             font-size: 4rem;
             font-weight: 700;
-            margin-bottom: 1rem;
         }
 
         .hero-content p {
             font-size: 1.25rem;
-            margin-bottom: 2rem;
         }
 
         .btn-primary {
             background-color: #DF6951;
             border-color: #DF6951;
-            padding: 0.75rem 2rem;
-            font-size: 1.1rem;
             border-radius: 50px;
-        }
-
-        .btn-primary:hover {
-            background-color: #c85a45;
-            border-color: #c85a45;
         }
 
         .btn-secondary {
             background-color: #444;
             border-color: #444;
             color: white;
-            padding: 0.75rem 1.5rem;
-            font-size: 0.9rem;
             border-radius: 50px;
-        }
-
-        .btn-secondary:hover {
-            background-color: #222;
-            border-color: #222;
         }
 
         .new-roadtrip-card {
             border: 2px dashed #DF6951;
             background-color: #f8f9fa;
-            text-align: center;
             height: 100%;
         }
 
@@ -153,28 +136,16 @@
         .new-roadtrip-card .btn-danger {
             background-color: #DF6951;
             border-color: #DF6951;
-            font-size: 1rem;
             border-radius: 50px;
-            padding: 0.75rem 1.5rem;
             margin-top: 25%;
-        }
-
-        .new-roadtrip-card .btn-danger:hover {
-            background-color: #c85a45;
-            border-color: #c85a45;
         }
 
         .card {
             border: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             overflow: hidden;
             height: 100%;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
         }
 
         .card-img-top {
@@ -189,39 +160,11 @@
         .card-title {
             font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
         }
 
         .card-text {
             font-size: 0.9rem;
             color: #555;
-        }
-
-        h2 {
-            font-size: 1.75rem;
-            margin-top: 2rem;
-        }
-
-        .text-center {
-            text-align: center;
-            margin-top: 5%;
-            margin-bottom: 3%;
-            font-size: 2.5rem;
-            font-weight: 600;
-        }
-
-        .row {
-            margin-left: 5% !important;
-            margin-right: 5% !important;
-        }
-
-        .col-md-3 {
-            margin-bottom: 5% !important;
-        }
-
-        .d-flex.justify-content-between a {
-            flex: 1;
-            margin: 0 5px;
         }
     </style>
 {% endblock %}

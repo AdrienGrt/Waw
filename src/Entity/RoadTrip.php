@@ -51,8 +51,8 @@ class RoadTrip
     #[ORM\JoinColumn(nullable: false)]
     private ?Vehicle $vehicle = null;
 
-    #[ORM\OneToMany(mappedBy: 'road_trip', targetEntity: Checkpoint::class)]
-    private Collection $checkpoints;
+    #[ORM\OneToMany(mappedBy: 'roadTrip', targetEntity: Media::class, cascade: ['persist', 'remove'])]
+    private Collection $medias;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description_supplementaire = null;
@@ -62,8 +62,7 @@ class RoadTrip
 
     public function __construct()
     {
-        $this->checkpoints = new ArrayCollection();
-        $this->imageSupplementaire = [];  // Initialisation du tableau d'images supplémentaires
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,14 +111,6 @@ class RoadTrip
     public function setImageSupplementaire(array $imageSupplementaire): static
     {
         $this->imageSupplementaire = $imageSupplementaire;
-        return $this;
-    }
-
-    public function addImageSupplementaire(string $image): static
-    {
-        if (!in_array($image, $this->imageSupplementaire, true)) {
-            $this->imageSupplementaire[] = $image;
-        }
         return $this;
     }
 
@@ -189,25 +180,25 @@ class RoadTrip
         return $this;
     }
 
-    public function getCheckpoints(): Collection
+    public function getMedias(): Collection
     {
-        return $this->checkpoints;
+        return $this->medias;
     }
 
-    public function addCheckpoint(Checkpoint $checkpoint): static
+    public function addMedia(Media $media): static
     {
-        if (!$this->checkpoints->contains($checkpoint)) {
-            $this->checkpoints->add($checkpoint);
-            $checkpoint->setRoadTrip($this);
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
+            $media->setRoadTrip($this);
         }
         return $this;
     }
 
-    public function removeCheckpoint(Checkpoint $checkpoint): static
+    public function removeMedia(Media $media): static
     {
-        if ($this->checkpoints->removeElement($checkpoint)) {
-            if ($checkpoint->getRoadTrip() === $this) {
-                $checkpoint->setRoadTrip(null);
+        if ($this->medias->removeElement($media)) {
+            if ($media->getRoadTrip() === $this) {
+                $media->setRoadTrip(null);
             }
         }
         return $this;
@@ -230,12 +221,6 @@ class RoadTrip
             return $this->arriver_date->diff($this->depart_date)->days;
         }
         return null;
-    }
-
-    public function setDuree(?int $duree): static
-    {
-        $this->duree = $duree;
-        return $this;
     }
 
     #[ORM\PrePersist]

@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -44,27 +45,22 @@ class RoadTripType extends AbstractType
                 'label' => 'Adresse d\'arrivée',
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('image', FileType::class, [
-                'label' => 'Image principale',
-                'required' => false,
-                'mapped' => false,
-                'attr' => ['class' => 'form-control'],
-            ])
+            
             ->add('description_supplementaire', TextareaType::class, [
                 'label' => 'Description supplémentaire',
                 'required' => false,
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('image_supplementaire', FileType::class, [
-                'label' => 'Images supplémentaires',
-                'required' => false,
-                'mapped' => false,
-                'multiple' => true,
-                'attr' => ['class' => 'form-control'],
+            ->add('medias', CollectionType::class, [
+                'entry_type' => MediaType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true, // Permet d'ajouter plusieurs fichiers
+                'allow_delete' => true, // Permet de supprimer des fichiers
+                'by_reference' => false, // IMPORTANT : pour que Doctrine puisse gérer la relation
             ])
-            ->add('vehicle', EntityType::class, [ // Utilisation d'EntityType pour lier avec l'entité Vehicle
+            ->add('vehicle', EntityType::class, [
                 'class' => Vehicle::class,
-                'choice_label' => 'type', // Utilise la colonne "type" comme label pour le menu déroulant
+                'choice_label' => 'type',
                 'placeholder' => 'Choisissez un véhicule',
                 'label' => 'Véhicule',
                 'attr' => ['class' => 'form-select'],
@@ -74,7 +70,7 @@ class RoadTripType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => RoadTrip::class, // L'entité associée à ce formulaire
+            'data_class' => RoadTrip::class,
         ]);
     }
 }

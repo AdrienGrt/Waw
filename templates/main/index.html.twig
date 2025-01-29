@@ -29,13 +29,13 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5); /* Superposition sombre */
+        background: rgba(0, 0, 0, 0.5);
         z-index: 1;
     }
 
     .hero-text {
         position: relative;
-        z-index: 2; /* Pour être au-dessus de la superposition sombre */
+        z-index: 2;
     }
 
     .hero-text h1 {
@@ -120,41 +120,6 @@
         background-color: #c15a42;
         color: #fff;
     }
-
-    /* Features Section */
-    .features-section {
-        padding: 80px 0;
-        background-color: #f1f1f1;
-        background-image: url('{{ asset('uploads/path/to/your/photo.jpg') }}');
-        background-size: cover;
-        background-position: center;
-    }
-
-    .features-section .container {
-        background-color: rgba(255, 255, 255, 0.7);
-        padding: 40px;
-        border-radius: 8px;
-    }
-
-    .icon-box {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 20px;
-        font-size: 24px;
-        background-color: #D66A50;
-        color: white;
-    }
-
-    .cta-section {
-        background-color: #D66A50;
-        padding: 20px 0;
-        color: #fff;
-        text-align: center;
-    }
 </style>
 {% endblock %}
 
@@ -176,7 +141,8 @@
             {% for roadTrip in roadTrips %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="{{ roadTrip.image ? asset('uploads/' ~ roadTrip.image) : asset('uploads/pt.jpg') }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+                        {% set image = roadTrip.medias|first ? asset(roadTrip.medias|first.filePath) : asset('uploads/pt.jpg') %}
+                        <img src="{{ image }}" alt="{{ roadTrip.titre }}" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ roadTrip.titre }}</h5>
                             <p class="card-text">Durée : {{ roadTrip.getDuree() ?? 'Non spécifiée' }} jours</p>
@@ -216,20 +182,12 @@
                         <p>Ajoutez vos voyages, photos et expériences uniques.</p>
                     </div>
                 </div>
-                <div class="d-flex">
-                    <div class="icon-box">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <div>
-                        <h5>Partagez avec vos proches</h5>
-                        <p>Invitez famille et amis à découvrir vos aventures.</p>
-                    </div>
-                </div>
             </div>
             <div class="col-md-6">
                 {% if roadTrips is not empty %}
+                    {% set featureImage = roadTrips[0].medias|first ? asset(roadTrips[0].medias|first.filePath) : asset('uploads/pt.jpg') %}
                     <div class="card">
-                        <img src="{{ roadTrips[0].image ? asset('uploads/' ~ roadTrips[0].image) : asset('uploads/pt.jpg') }}" alt="{{ roadTrips[0].titre }}" class="card-img-top">
+                        <img src="{{ featureImage }}" alt="{{ roadTrips[0].titre }}" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ roadTrips[0].titre }}</h5>
                             <p class="card-text">Durée : {{ roadTrips[0].getDuree() ?? 'Non spécifiée' }} jours</p>
@@ -244,10 +202,14 @@
 </div>
 
 <!-- Call to Action Section -->
-<div class="cta-section">
+<div class="cta-section py-5 text-center text-white" style="background-color: #D66A50; margin-top: 100px;"> 
     <div class="container">
-        <h2 class="mb-4">Prêt à commencer votre aventure ?</h2>
-        <a href="{{ path('app_register') }}" class="btn btn-light btn-lg">S'INSCRIRE MAINTENANT</a>
+        <h2 class="mb-3 fw-bold">Prêt à commencer votre aventure ?</h2>
+        <p class="lead mb-4">Rejoignez notre communauté et partagez vos plus beaux road trips avec le monde entier.</p>
+        <a href="{{ path('app_register') }}" class="btn btn-light btn-lg px-4 py-2 fw-bold shadow-sm">
+            S'INSCRIRE MAINTENANT
+        </a>
     </div>
 </div>
+
 {% endblock %}

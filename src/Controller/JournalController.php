@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface; // Ajoutez cette importation
 
+
+#[Route('/carnet')]
+
 class JournalController extends AbstractController
 {
     private $entityManager;
@@ -19,7 +22,7 @@ class JournalController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/carnet', name: 'app_journal')]
+    #[Route('/', name: 'app_journal')]
     public function journal(RoadTripRepository $roadTripRepository)
     {
         // Vérifier si l'utilisateur est connecté
@@ -36,40 +39,6 @@ class JournalController extends AbstractController
         // Passer les roadtrips à la vue
         return $this->render('journal.html.twig', [
             'roadTrips' => $roadTrips
-        ]);
-    }
-
-    #[Route('/roadtrip/create', name: 'app_roadtrip_create')]
-    public function create(Request $request)
-    {
-        // Vérifier si l'utilisateur est connecté
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        // Créer une nouvelle instance de RoadTrip
-        $roadTrip = new RoadTrip();
-        
-        // Créer le formulaire
-        $form = $this->createForm(RoadTripType::class, $roadTrip);
-
-        // Traitement du formulaire
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Associer l'utilisateur connecté au roadtrip
-            $roadTrip->setUser($this->getUser());
-
-            // Sauvegarder dans la base de données
-            $this->entityManager->persist($roadTrip);
-            $this->entityManager->flush();
-
-            // Rediriger vers la page carnet ou un autre endroit
-            return $this->redirectToRoute('app_journal');
-        }
-
-        return $this->render('dashboard/roadtrip/create.html.twig', [
-            'form' => $form->createView(),
         ]);
     }
 
