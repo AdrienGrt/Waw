@@ -5,15 +5,28 @@
 {% block stylesheets %}
     {{ parent() }}
     <style>
+        /* Fond d'écran avec overlay */
         body {
-            background-color: #f5f5f5;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
+            background-image: url('https://images.unsplash.com/photo-1738848392298-cf0b62edc750?q=80&w=3386&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: -1;
         }
 
         /* Hero Section */
         .hero-section {
-            background-image: url('https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-image: url('{{ roadTrip.medias|first and roadTrip.medias|first.filePath ? asset(roadTrip.medias|first.filePath) : "https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}');
             background-size: cover;
             background-position: center;
             height: 400px;
@@ -38,7 +51,6 @@
             z-index: 1;
             text-align: center;
             color: white;
-            
         }
 
         .hero-content h1 {
@@ -83,10 +95,12 @@
             margin-bottom: 30px;
             padding: 20px;
         }
-    .text-center{
-        margin-top: 10%;
-        margin-bottom: 5%;
-    }
+
+        .text-center {
+            margin-top: 10%;
+            margin-bottom: 5%;
+        }
+
         .text-primary {
             color: #DF6951 !important;
         }
@@ -98,6 +112,15 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Uniformisation des images supplémentaires */
+        .extra-images-container img {
+            width: 100%;
+            height: 350px;
+            margin-top: 10px;
+            object-fit: cover;
+            border-radius: 10px;
         }
 
         @media (max-width: 768px) {
@@ -131,7 +154,9 @@
     <!-- Main Content -->
     <div class="container mt-4">
         <div class="text-center">
-            <img src="https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="{{ roadTrip.titre }}" class="profile-image">
+            <!-- Image principale -->
+            {% set imagePrincipale = roadTrip.medias|first and roadTrip.medias|first.filePath ? asset(roadTrip.medias|first.filePath) : asset('uploads/pt.jpg') %}
+            <img src="{{ imagePrincipale }}" alt="{{ roadTrip.titre }}" class="profile-image">
         </div>
 
         <div class="card">
@@ -142,7 +167,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h6 class="text-primary">Véhicule</h6>
-                        <p>{{ roadTrip.vehicle }}</p>
+                        <p>{{ roadTrip.vehicle.type ?? 'Non spécifié' }}</p>
                     </div>
                     <div class="col-md-6">
                         <h6 class="text-primary">Durée</h6>
@@ -185,22 +210,27 @@
             </div>
         {% endif %}
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="text-primary">Images Supplémentaires</h5>
-                <div class="row">
-                    {% for i in 1..5 %}
-                        <div class="col-md-4 mb-3">
-                            <img src="https://images.unsplash.com/photo-1581741883196-605d6e35cb9e?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image supplémentaire" class="img-fluid">
-                        </div>
-                    {% endfor %}
+        <!-- Images Supplémentaires -->
+        {% if roadTrip.medias|length > 1 %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-primary">Images Supplémentaires</h5>
+                    <div class="row extra-images-container">
+                        {% for media in roadTrip.medias|slice(1) %}
+                            {% if media.filePath %}
+                                <div class="col-md-4 mb-3">
+                                    <img src="{{ asset(media.filePath) }}" alt="Image supplémentaire" class="img-fluid">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         <!-- Back Button -->
         <div class="text-center back-btn">
-            <a href="{{ referer }}" class="btn btn-primary">Retour</a>
+            <a href="{{ referer ?: path('app_journal') }}" class="btn btn-primary">Retour</a>
         </div>
     </div>
 {% endblock %}

@@ -15,9 +15,10 @@ class MediaType extends AbstractType
         $builder
             ->add('file', FileType::class, [
                 'label' => 'Ajouter une photo',
-                'required' => false, // Permet de ne pas bloquer si aucun fichier n'est ajouté
-                'mapped' => false, // IMPORTANT : Symfony ne mappe pas directement les fichiers
-                'attr' => ['accept' => 'image/*'] // Pour n’accepter que les images
+                'required' => false,
+                'mapped' => false,  // ✅ Empêche Doctrine de gérer ce champ directement
+                'multiple' => true,  // ✅ Permet l'upload de plusieurs fichiers
+                'attr' => ['class' => 'form-control', 'accept' => 'image/*'],
             ]);
     }
 

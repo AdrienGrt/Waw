@@ -24,38 +24,51 @@ class RoadTripController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('medias') as $mediaForm) {
-                $file = $mediaForm->get('file')->getData(); // ✅ Récupère le fichier
+            $roadTrip->setUser($this->getUser());
+            $roadTrip->setIsPublic($form->get('isPublic')->getData() ?? false);
         
-                if ($file instanceof UploadedFile) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+            // Traitement de l'image principale
+            $mainImageFile = $form->get('imagePrincipale')->getData();
+            if ($mainImageFile) {
+                $newFilename = uniqid() . '.' . $mainImageFile->guessExtension();
+                $mainImageFile->move($this->getParameter('uploads_directory'), $newFilename);
+                
+                $media = new Media();
+                $media->setFileName($newFilename);
+                $media->setFilePath('/uploads/images/' . $newFilename);
+                $media->setRoadTrip($roadTrip);
+                
+                $roadTrip->addMedia($media);
+                $em->persist($media);
+            }
         
-                    $uploadDir = $this->getParameter('uploads_directory');
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0775, true);
+            // Traitement des images supplémentaires
+            $extraImages = $form->get('extraImages')->getData();
+            if ($extraImages) {
+                foreach ($extraImages as $file) {
+                    if ($file instanceof UploadedFile) {
+                        $newFilename = uniqid() . '.' . $file->guessExtension();
+                        $file->move($this->getParameter('uploads_directory'), $newFilename);
+        
+                        $media = new Media();
+                        $media->setFileName($newFilename);
+                        $media->setFilePath('/uploads/images/' . $newFilename);
+                        $media->setRoadTrip($roadTrip);
+                        
+                        $roadTrip->addMedia($media);
+                        $em->persist($media);
                     }
-        
-                    $file->move($uploadDir, $newFilename);
-        
-                    $media = new Media();
-                    $media->setFileName($newFilename);
-                    $media->setFilePath('/uploads/images/' . $newFilename);
-                    $media->setRoadTrip($roadTrip);
-        
-                    $roadTrip->addMedia($media);
-                    $em->persist($media);
                 }
             }
         
-            $roadTrip->setUser($this->getUser());
             $em->persist($roadTrip);
             $em->flush();
         
             $this->addFlash('success', 'Le road trip a été créé avec succès.');
-            return $this->redirectToRoute('app_dashboard_roadtrip_list');
+            return $this->redirectToRoute('app_journal'); // ✅ Redirection vers le journal
         }
+        
+
         return $this->render('dashboard/roadtrip/create.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -65,57 +78,71 @@ class RoadTripController extends AbstractController
     public function listRoadTrips(EntityManagerInterface $em): Response
     {
         $roadTrips = $em->getRepository(RoadTrip::class)->findAll();
-
         return $this->render('dashboard/roadtrip/list.html.twig', [
             'roadTrips' => $roadTrips,
         ]);
     }
 
-    
-
     #[Route('/{id}/edit', name: 'app_dashboard_roadtrip_edit', methods: ['GET', 'POST'])]
     public function editRoadTrip(int $id, EntityManagerInterface $em, Request $request, SluggerInterface $slugger): Response
     {
         $roadTrip = $em->getRepository(RoadTrip::class)->find($id);
-
         if (!$roadTrip || $roadTrip->getUser() !== $this->getUser()) {
             throw $this->createNotFoundException('Road trip introuvable ou non autorisé.');
         }
 
+        $referer = $request->headers->get('referer');
         $form = $this->createForm(RoadTripType::class, $roadTrip);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('medias')->getData() as $mediaForm) {
-                $file = $mediaForm['file']; // Récupère le fichier
-        
-                if ($file && $file instanceof UploadedFile) {
-                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
-        
-                    $uploadDir = $this->getParameter('uploads_directory');
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0775, true);
+            // Gestion de l'image principale
+            $mainImageFile = $form->get('imagePrincipale')->getData();
+            if ($mainImageFile instanceof UploadedFile) {
+                $safeFilename = $slugger->slug(pathinfo($mainImageFile->getClientOriginalName(), PATHINFO_FILENAME));
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $mainImageFile->guessExtension();
+
+                $uploadDir = $this->getParameter('uploads_directory');
+                $mainImageFile->move($uploadDir, $newFilename);
+
+                $media = new Media();
+                $media->setFileName($newFilename);
+                $media->setFilePath('/uploads/images/' . $newFilename);
+                $media->setRoadTrip($roadTrip);
+
+                $roadTrip->addMedia($media);
+                $em->persist($media);
+            }
+
+            // Gestion des images supplémentaires
+            $extraImages = $form->get('medias')->getData();
+            if ($extraImages) {
+                foreach ($extraImages as $file) {
+                    if ($file instanceof UploadedFile) {
+                        $safeFilename = $slugger->slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+
+                        $file->move($uploadDir, $newFilename);
+
+                        $extraMedia = new Media();
+                        $extraMedia->setFileName($newFilename);
+                        $extraMedia->setFilePath('/uploads/images/' . $newFilename);
+                        $extraMedia->setRoadTrip($roadTrip);
+
+                        $roadTrip->addMedia($extraMedia);
+                        $em->persist($extraMedia);
                     }
-        
-                    $file->move($uploadDir, $newFilename);
-        
-                    $media = new Media();
-                    $media->setFileName($newFilename);
-                    $media->setFilePath('/uploads/images/' . $newFilename);
-                    $media->setRoadTrip($roadTrip);
-        
-                    $roadTrip->addMedia($media);
-                    $em->persist($media);
                 }
             }
+
+            $em->flush();
+            return $this->redirectToRoute('app_journal');
         }
-        
 
         return $this->render('dashboard/roadtrip/edit.html.twig', [
             'form' => $form->createView(),
             'roadTrip' => $roadTrip,
+            'referer' => $referer,
         ]);
     }
 
@@ -123,21 +150,18 @@ class RoadTripController extends AbstractController
     public function deleteRoadTrip(int $id, EntityManagerInterface $em, Request $request): Response
     {
         $roadTrip = $em->getRepository(RoadTrip::class)->find($id);
-
         if (!$roadTrip || $roadTrip->getUser() !== $this->getUser()) {
             throw $this->createNotFoundException('Road trip introuvable ou non autorisé.');
         }
 
-        $token = $request->request->get('_token');
-        if (!$this->isCsrfTokenValid('delete' . $roadTrip->getId(), $token)) {
+        if (!$this->isCsrfTokenValid('delete' . $roadTrip->getId(), $request->request->get('_token'))) {
             throw new \Exception('Token CSRF invalide.');
         }
 
-        // Suppression des fichiers associés
         foreach ($roadTrip->getMedias() as $media) {
             $filePath = $this->getParameter('uploads_directory') . '/' . $media->getFileName();
             if (file_exists($filePath)) {
-                unlink($filePath); // Supprime le fichier
+                unlink($filePath);
             }
             $em->remove($media);
         }
@@ -145,27 +169,22 @@ class RoadTripController extends AbstractController
         $em->remove($roadTrip);
         $em->flush();
 
-        $this->addFlash('success', 'Le road trip a été supprimé avec succès.');
-        return $this->redirectToRoute('app_dashboard_roadtrip_list');
+        $this->addFlash('success', 'Le road trip et ses médias ont été supprimés avec succès.');
+        return $this->redirectToRoute('app_journal');
     }
-
 
     #[Route('/{id}', name: 'app_dashboard_roadtrip_view', methods: ['GET'])]
     public function viewRoadTrip(int $id, EntityManagerInterface $em, Request $request): Response
     {
         $roadTrip = $em->getRepository(RoadTrip::class)->find($id);
-    
         if (!$roadTrip) {
             throw $this->createNotFoundException('Road trip introuvable.');
         }
-    
-        // Récupérer l'URL précédente (page de laquelle l'utilisateur vient)
+
         $referer = $request->headers->get('referer', $this->generateUrl('app_dashboard_roadtrip_list'));
-    
         return $this->render('dashboard/roadtrip/view.html.twig', [
             'roadTrip' => $roadTrip,
-            'referer' => $referer, // ✅ On passe bien `referer` à Twig
+            'referer' => $referer,
         ]);
     }
-    
 }

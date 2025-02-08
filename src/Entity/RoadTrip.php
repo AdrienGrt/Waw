@@ -38,6 +38,9 @@ class RoadTrip
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $arriver_date = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+private ?bool $isPublic = false;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $depart_address = null;
 
@@ -91,6 +94,17 @@ class RoadTrip
         $this->description = $description;
         return $this;
     }
+
+    public function getIsPublic(): ?bool
+{
+    return $this->isPublic;
+}
+
+public function setIsPublic(bool $isPublic): static
+{
+    $this->isPublic = $isPublic;
+    return $this;
+}
 
     public function getImage(): ?string
     {

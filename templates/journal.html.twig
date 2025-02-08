@@ -15,58 +15,54 @@
     <!-- Affichage des roadtrips -->
     <h2 class="text-center mt-5">Mes Roadtrips</h2>
 
-    <div id="voyage" class="row justify-content-center mt-4">
-        <!-- Encart pour créer un nouveau roadtrip -->
-        <div class="col-md-3 mb-4">
-            <div class="card new-roadtrip-card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Créer un Nouveau Roadtrip</h5>
-                    <a href="{{ path('app_dashboard_roadtrip_create') }}" class="btn btn-danger">
-                        <i class="fas fa-plus"></i> Créer
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Affichage des roadtrips existants -->
-        {% if roadTrips is not empty %}
-            {% for roadTrip in roadTrips %}
-                <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <!-- Vérification et affichage de l'image principale -->
-                        {% if roadTrip.image %}
-                            <img src="{{ asset('uploads/images/' ~ roadTrip.image) }}" alt="{{ roadTrip.titre }}" class="card-img-top">
-                        {% else %}
-                            <img src="{{ asset('uploads/images/default.jpg') }}" alt="Image par défaut" class="card-img-top">
-                        {% endif %}
-
-                        <div class="card-body">
-                            <h5 class="card-title">{{ roadTrip.titre }}</h5>
-                            <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                {{ roadTrip.description }}
-                            </p>
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-primary">Voir</a>
-                                <a href="{{ path('app_dashboard_roadtrip_edit', { id: roadTrip.id }) }}" class="btn btn-secondary">Modifier</a>
-                            </div>
-                        </div>
-
-                        <!-- Affichage des images supplémentaires -->
-                        {% if roadTrip.medias is not empty %}
-                            <div class="row mt-2 px-2">
-                                {% for media in roadTrip.medias %}
-                                    <div class="col-md-4 mb-2 px-1">
-                                        <img src="{{ asset('uploads/images/' ~ media.fileName) }}" alt="Image supplémentaire" class="img-fluid rounded">
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+    <div id="voyage" class="container">
+        <div class="row justify-content-center mt-4">
+            <!-- Encart pour créer un nouveau roadtrip -->
+            <div class="col-md-4 mb-4">
+                <div class="card new-roadtrip-card d-flex align-items-center justify-content-center">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Créer un Nouveau Roadtrip</h5>
+                        <a href="{{ path('app_dashboard_roadtrip_create') }}" class="btn btn-danger btn-lg">
+                            <i class="fas fa-plus"></i> Créer
+                        </a>
                     </div>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p class="text-center">Aucun roadtrip disponible pour le moment.</p>
-        {% endif %}
+            </div>
+
+            <!-- Affichage des roadtrips existants -->
+            {% if roadTrips is not empty %}
+                {% for roadTrip in roadTrips %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <!-- Image principale du road trip -->
+                            {% set image = roadTrip.medias|first ? asset(roadTrip.medias|first.filePath) : asset('uploads/images/default.jpg') %}
+                            <img src="{{ image }}" alt="{{ roadTrip.titre }}" class="card-img-top">
+
+                            <div class="card-body">
+                                <h5 class="card-title">{{ roadTrip.titre }}</h5>
+                                <p class="card-text text-truncate">
+                                    {{ roadTrip.description }}
+                                </p>
+
+                                <div class="d-flex gap-2">
+    <a href="{{ path('app_dashboard_roadtrip_view', { id: roadTrip.id }) }}" class="btn btn-primary flex-grow-1">Voir</a>
+    <a href="{{ path('app_dashboard_roadtrip_edit', { id: roadTrip.id }) }}" class="btn btn-secondary flex-grow-1">Modifier</a>
+</div>
+
+
+                                <!-- Bouton Supprimer -->
+                                <form action="{{ path('app_dashboard_roadtrip_delete', { id: roadTrip.id }) }}" method="post" class="mt-2">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ roadTrip.id) }}">
+                                    <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce roadtrip ?');">Supprimer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">Aucun roadtrip disponible pour le moment.</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 
@@ -102,7 +98,7 @@
         }
 
         .hero-content h1 {
-            font-size: 4rem;
+            font-size: 3rem;
             font-weight: 700;
         }
 
@@ -127,17 +123,16 @@
             border: 2px dashed #DF6951;
             background-color: #f8f9fa;
             height: 100%;
-        }
-
-        .new-roadtrip-card .card-body {
-            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .new-roadtrip-card .btn-danger {
             background-color: #DF6951;
             border-color: #DF6951;
             border-radius: 50px;
-            margin-top: 25%;
+            margin-top: 15%;
         }
 
         .card {
@@ -149,7 +144,7 @@
         }
 
         .card-img-top {
-            height: 160px;
+            height: 200px;
             object-fit: cover;
         }
 
@@ -158,13 +153,33 @@
         }
 
         .card-title {
-            font-size: 1rem;
+            font-size: 1.25rem;
             font-weight: 600;
+            margin-top:50px;
         }
 
         .card-text {
             font-size: 0.9rem;
             color: #555;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
+
+        .btn-danger {
+            background-color: #DF6951;
+            border-color: #DF6951;
+            border-radius: 50px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c85a44;
+            border-color: #c85a44;
+        }
+
+        .d-flex.gap-2 a {
+    flex: 1; /* Fait en sorte que les boutons prennent toute la place disponible */
+}
+
     </style>
 {% endblock %}

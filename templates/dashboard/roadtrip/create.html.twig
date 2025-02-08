@@ -18,6 +18,8 @@
             padding: 30px;
             max-width: 600px;
             width: 100%;
+            margin-top: 5%;
+            margin-bottom: 5%;
         }
 
         .btn-primary {
@@ -29,6 +31,13 @@
             background-color: #c85a44;
         }
 
+        .page-title {
+            color: #DF6951;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         .image-preview {
             width: 120px;
             height: 120px;
@@ -37,6 +46,13 @@
             margin: 10px auto;
             border: 2px dashed #DF6951;
             border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: #DF6951;
+            background-color: #f8f9fa;
+            position: relative;
         }
 
         .image-gallery {
@@ -51,13 +67,36 @@
             object-fit: cover;
             border-radius: 10px;
         }
+
+        /* Stylisation du bouton Public/Privé */
+        .toggle-public {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 50px;
+            background-color: #f8f9fa;
+            border: 2px solid #DF6951;
+            color: #DF6951;
+            transition: 0.3s ease;
+            text-align: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .toggle-public:hover {
+            background-color: #DF6951;
+            color: white;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
     <div class="container d-flex align-items-center justify-content-center min-vh-100">
         <div class="form-container">
-            <h2 class="text-primary text-center mb-4">Créer un Road Trip</h2>
+            <h2 class="page-title">Créer un Road Trip</h2>
 
             {% if form_errors(form) %}
                 <div class="alert alert-danger">
@@ -67,18 +106,35 @@
 
             {{ form_start(form, {'enctype': 'multipart/form-data'}) }}
 
+            <!-- Nom du Road Trip -->
             <div class="mb-3">
                 {{ form_label(form.titre, 'Nom du Road Trip', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.titre) }}
             </div>
 
+            <!-- Description -->
             <div class="mb-3">
                 {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.description) }}
             </div>
 
+            <!-- Dates -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.depart_date, 'Date de Départ', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.depart_date, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.depart_date) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.arriver_date, 'Date d\'Arrivée', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.arriver_date, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.arriver_date) }}
+                </div>
+            </div>
+
+            <!-- Adresse Départ & Arrivée -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     {{ form_label(form.depart_address, 'Adresse de Départ', {'label_attr': {'class': 'form-label'}}) }}
@@ -92,37 +148,45 @@
                 </div>
             </div>
 
+            <!-- Image principale -->
             <div class="mb-3">
-                {{ form_label(form.depart_date, 'Date de Départ', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.depart_date, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.depart_date) }}
+                <h6 class="form-label">Image Principale</h6>
+                <div class="image-preview" id="imagePreview">📷</div>
+                {{ form_widget(form.imagePrincipale, {'attr': {'class': 'form-control', 'onchange': 'previewImage(this)'}}) }}
             </div>
 
+            <!-- Images Supplémentaires -->
             <div class="mb-3">
-                {{ form_label(form.arriver_date, 'Date d\'Arrivée', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.arriver_date, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.arriver_date) }}
+    <h6 class="form-label">Photos Supplémentaires</h6>
+    <div class="image-gallery" id="imageGallery"></div>
+    {{ form_widget(form.extraImages, {'attr': {'class': 'form-control', 'multiple': true, 'accept': 'image/*', 'onchange': 'previewExtraImages(this)'}}) }}
+</div>
+
+
+            <!-- Description Supplémentaire -->
+            <div class="mb-3">
+                {{ form_label(form.description_supplementaire, 'Description Supplémentaire', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.description_supplementaire, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description_supplementaire) }}
             </div>
 
-            <div id="media-collection" data-prototype="{{ form_widget(form.medias.vars.prototype)|e }}">
-                {% for mediaForm in form.medias %}
-                    <div class="media-item">
-                        {{ form_widget(mediaForm.file) }}
-                        <button type="button" class="btn-remove-media btn btn-danger">Supprimer</button>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <button type="button" id="add-media" class="btn btn-primary mt-3">Ajouter une image</button>
-
+            <!-- Véhicule -->
             <div class="mb-3">
                 {{ form_label(form.vehicle, 'Choix du Véhicule', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.vehicle, {'attr': {'class': 'form-select'}}) }}
                 {{ form_errors(form.vehicle) }}
             </div>
 
+            <!-- Bouton Public / Privé -->
+            <div class="mb-3">
+                <label class="toggle-public">
+                    {{ form_widget(form.isPublic) }}
+                    <span>Rendre ce road trip public</span>
+                </label>
+            </div>
+
             <div class="d-flex justify-content-between">
-                <a href="{{ path('app_dashboard_roadtrip_list') }}" class="btn btn-secondary">Retour</a>
+                <a href="{{ path('app_journal') }}" class="btn btn-secondary">Retour</a>
                 <button type="submit" class="btn btn-primary">Publier</button>
             </div>
 
@@ -133,39 +197,29 @@
 
 {% block javascripts %}
     {{ parent() }}
-    
-    <script>
-document.addEventListener("DOMContentLoaded", function() {
-    var mediaCollection = document.getElementById("media-collection");
-    var addButton = document.getElementById("add-media");
+<script>
+    function previewExtraImages(input) {
+        const previewContainer = document.getElementById('imageGallery');
+        previewContainer.innerHTML = ''; // Vide la galerie avant d'ajouter les nouvelles images
+        const files = input.files;
 
-    if (!addButton || !mediaCollection) return;
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
 
-    var index = mediaCollection.children.length;
+            reader.onloadend = function () {
+                const imgContainer = document.createElement('div');
+                imgContainer.classList.add('image-container');
 
-    addButton.addEventListener("click", function() {
-        var prototype = mediaCollection.dataset.prototype;
-        var newForm = prototype.replace(/__name__/g, index);
-        index++;
+                const img = document.createElement('img');
+                img.src = reader.result;
+                imgContainer.appendChild(img);
 
-        var newFormElement = document.createElement("div");
-        newFormElement.className = "media-item";
-        newFormElement.innerHTML = newForm;
+                previewContainer.appendChild(imgContainer);
+            };
 
-        var removeButton = document.createElement("button");
-        removeButton.type = "button";
-        removeButton.innerText = "Supprimer";
-        removeButton.className = "btn-remove-media btn btn-danger";
-        newFormElement.appendChild(removeButton);
-
-        mediaCollection.appendChild(newFormElement);
-    });
-
-    mediaCollection.addEventListener("click", function(e) {
-        if (e.target && e.target.classList.contains("btn-remove-media")) {
-            e.target.closest(".media-item").remove();
-        }
-    });
-});
+            reader.readAsDataURL(file);
+        });
+    }
 </script>
+
 {% endblock %}
